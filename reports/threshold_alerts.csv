@@ -1,0 +1,13 @@
+model,threshold,alerts
+Support Vector Machine,0.2,705
+Support Vector Machine,0.3,581
+Support Vector Machine,0.4,527
+Support Vector Machine,0.5,482
+Support Vector Machine,0.6,412
+Support Vector Machine,0.7,310
+Extreme Gradient Boosting,0.2,1561
+Extreme Gradient Boosting,0.3,1012
+Extreme Gradient Boosting,0.4,685
+Extreme Gradient Boosting,0.5,529
+Extreme Gradient Boosting,0.6,427
+Extreme Gradient Boosting,0.7,253

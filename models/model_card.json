@@ -1,0 +1,270 @@
+{
+  "model_name": "Extreme Gradient Boosting",
+  "dataset": "UCI Default of Credit Card Clients (Taiwan, 2005), id 350",
+  "input_columns": [
+    "LIMIT_BAL",
+    "PAY_0",
+    "PAY_2",
+    "PAY_3",
+    "PAY_4",
+    "PAY_5",
+    "PAY_6",
+    "BILL_AMT1",
+    "BILL_AMT2",
+    "BILL_AMT3",
+    "BILL_AMT4",
+    "BILL_AMT5",
+    "BILL_AMT6",
+    "PAY_AMT1",
+    "PAY_AMT2",
+    "PAY_AMT3",
+    "PAY_AMT4",
+    "PAY_AMT5",
+    "PAY_AMT6",
+    "EDUCATION"
+  ],
+  "excluded_columns": [
+    "ID",
+    "default",
+    "SEX",
+    "MARRIAGE",
+    "AGE"
+  ],
+  "split": {
+    "train": 21000,
+    "valid": 4500,
+    "test": 4500
+  },
+  "base_default_rate": 0.2212,
+  "capacity": 450,
+  "risk_bands": {
+    "high": 0.5809203386306763,
+    "medium": 0.2212
+  },
+  "assumptions": {
+    "contact_cost_ntd": 500,
+    "false_alarm_cost_ntd": 1500,
+    "recovery_rate": 0.1
+  },
+  "validation": {
+    "Logistic Regression": {
+      "Accuracy": 0.8113333333333334,
+      "Precision": 0.6593886462882096,
+      "Recall": 0.3035175879396985,
+      "F1-score": 0.41569167240192706,
+      "Specificity": 0.9554921540656205,
+      "Alerts": 458.0,
+      "TP": 302.0,
+      "FP": 156.0,
+      "FN": 693.0,
+      "TN": 3349.0,
+      "Average Precision": 0.5119704144134846,
+      "ROC-AUC": 0.7551732987333242
+    },
+    "Decision Tree": {
+      "Accuracy": 0.8126666666666666,
+      "Precision": 0.6357142857142857,
+      "Recall": 0.3577889447236181,
+      "F1-score": 0.45787781350482315,
+      "Specificity": 0.9417974322396576,
+      "Alerts": 560.0,
+      "TP": 356.0,
+      "FP": 204.0,
+      "FN": 639.0,
+      "TN": 3301.0,
+      "Average Precision": 0.5121798019683889,
+      "ROC-AUC": 0.7639694908207226
+    },
+    "Random Forest": {
+      "Accuracy": 0.814,
+      "Precision": 0.6479400749063671,
+      "Recall": 0.34773869346733666,
+      "F1-score": 0.4525833878351864,
+      "Specificity": 0.9463623395149786,
+      "Alerts": 534.0,
+      "TP": 346.0,
+      "FP": 188.0,
+      "FN": 649.0,
+      "TN": 3317.0,
+      "Average Precision": 0.5518787000957014,
+      "ROC-AUC": 0.7773066473594794
+    },
+    "Support Vector Machine": {
+      "Accuracy": 0.8135555555555556,
+      "Precision": 0.6618257261410788,
+      "Recall": 0.32060301507537686,
+      "F1-score": 0.43195666892349355,
+      "Specificity": 0.9534950071326677,
+      "Alerts": 482.0,
+      "TP": 319.0,
+      "FP": 163.0,
+      "FN": 676.0,
+      "TN": 3342.0,
+      "Average Precision": 0.49608517440621724,
+      "ROC-AUC": 0.7140659072824894
+    },
+    "Extreme Gradient Boosting": {
+      "Accuracy": 0.8182222222222222,
+      "Precision": 0.667296786389414,
+      "Recall": 0.35477386934673366,
+      "F1-score": 0.463254593175853,
+      "Specificity": 0.9497860199714693,
+      "Alerts": 529.0,
+      "TP": 353.0,
+      "FP": 176.0,
+      "FN": 642.0,
+      "TN": 3329.0,
+      "Average Precision": 0.5539771128926007,
+      "ROC-AUC": 0.7787916759259923
+    }
+  },
+  "validation_top_k": {
+    "Logistic Regression": {
+      "Real defaulters found": 298.0,
+      "False alerts": 152.0,
+      "Precision at 450": 0.6622222222222223,
+      "Recall at 450": 0.2994974874371859,
+      "Average Precision": 0.5119704144134846
+    },
+    "Decision Tree": {
+      "Real defaulters found": 307.0,
+      "False alerts": 143.0,
+      "Precision at 450": 0.6822222222222222,
+      "Recall at 450": 0.3085427135678392,
+      "Average Precision": 0.5121798019683889
+    },
+    "Random Forest": {
+      "Real defaulters found": 310.0,
+      "False alerts": 140.0,
+      "Precision at 450": 0.6888888888888889,
+      "Recall at 450": 0.31155778894472363,
+      "Average Precision": 0.5518787000957014
+    },
+    "Support Vector Machine": {
+      "Real defaulters found": 304.0,
+      "False alerts": 146.0,
+      "Precision at 450": 0.6755555555555556,
+      "Recall at 450": 0.3055276381909548,
+      "Average Precision": 0.49608517440621724
+    },
+    "Extreme Gradient Boosting": {
+      "Real defaulters found": 311.0,
+      "False alerts": 139.0,
+      "Precision at 450": 0.6911111111111111,
+      "Recall at 450": 0.31256281407035175,
+      "Average Precision": 0.5539771128926007
+    }
+  },
+  "test": {
+    "Accuracy": 0.8175555555555556,
+    "Precision": 0.665406427221172,
+    "Recall": 0.3534136546184739,
+    "F1-score": 0.4616393442622951,
+    "Specificity": 0.949486301369863,
+    "Alerts": 529.0,
+    "TP": 352.0,
+    "FP": 177.0,
+    "FN": 644.0,
+    "TN": 3327.0,
+    "Average Precision": 0.5623934506416867,
+    "ROC-AUC": 0.781235243485357,
+    "Real defaulters found": 311.0,
+    "False alerts": 139.0,
+    "Precision at 450": 0.6911111111111111,
+    "Recall at 450": 0.31224899598393574,
+    "net_value_ntd": 1664350.3000000003,
+    "saved_ntd": 2097850.3000000003
+  },
+  "cost_curve_best_k": 550,
+  "net_value_valid_model": 1468922.0,
+  "net_value_valid_random": -282195.12999999995,
+  "feature_importance": {
+    "PAY_0": 0.17942620642273194,
+    "BILL_AMT1": 0.04124879091091953,
+    "LIMIT_BAL": 0.02043605748899082,
+    "BILL_AMT6": 0.017374794988447562,
+    "PAY_AMT3": 0.013154901907142458,
+    "PAY_AMT2": 0.011895057723109993,
+    "PAY_AMT4": 0.010059136875615748,
+    "PAY_AMT1": 0.00914645793572726,
+    "PAY_AMT6": 0.007966095127336814,
+    "PAY_2": 0.007154846024658279,
+    "PAY_AMT5": 0.005369470076859795,
+    "PAY_3": 0.004181315761885074,
+    "PAY_5": 0.003840013985172597,
+    "PAY_4": 0.003804125277762904,
+    "PAY_6": 0.003323838934627421,
+    "EDUCATION": 0.0027740129976665307,
+    "BILL_AMT5": 0.0022242083238952935,
+    "BILL_AMT4": 0.0021488834579531215,
+    "BILL_AMT3": 0.0018715927446486757,
+    "BILL_AMT2": 0.0007455994565683354
+  },
+  "portfolio_medians": {
+    "UTIL_LAST": 0.31564214285714287,
+    "PAY_RATIO": 0.12481746761825777,
+    "MONTHS_LATE": 0.0,
+    "LIMIT_BAL": 140000.0
+  },
+  "innovation_feature_engineering": {
+    "Logistic Regression": {
+      "AP raw features": 0.5022,
+      "AP + engineered": 0.512,
+      "AUC raw features": 0.713,
+      "AUC + engineered": 0.7552,
+      "AUC gain": 0.0422
+    },
+    "Decision Tree": {
+      "AP raw features": 0.4921,
+      "AP + engineered": 0.5122,
+      "AUC raw features": 0.7417,
+      "AUC + engineered": 0.764,
+      "AUC gain": 0.0223
+    },
+    "Random Forest": {
+      "AP raw features": 0.5461,
+      "AP + engineered": 0.5519,
+      "AUC raw features": 0.7749,
+      "AUC + engineered": 0.7773,
+      "AUC gain": 0.0024
+    },
+    "Extreme Gradient Boosting": {
+      "AP raw features": 0.5426,
+      "AP + engineered": 0.554,
+      "AUC raw features": 0.7753,
+      "AUC + engineered": 0.7788,
+      "AUC gain": 0.0035
+    }
+  },
+  "innovation_fairness": {
+    "Logistic Regression": {
+      "AP with sensitive": 0.5135,
+      "AP without (ours)": 0.512,
+      "AUC with sensitive": 0.7542,
+      "AUC without (ours)": 0.7552,
+      "AUC cost": -0.001
+    },
+    "Decision Tree": {
+      "AP with sensitive": 0.5125,
+      "AP without (ours)": 0.5122,
+      "AUC with sensitive": 0.7645,
+      "AUC without (ours)": 0.764,
+      "AUC cost": 0.0005
+    },
+    "Random Forest": {
+      "AP with sensitive": 0.556,
+      "AP without (ours)": 0.5519,
+      "AUC with sensitive": 0.7788,
+      "AUC without (ours)": 0.7773,
+      "AUC cost": 0.0015
+    },
+    "Extreme Gradient Boosting": {
+      "AP with sensitive": 0.5517,
+      "AP without (ours)": 0.554,
+      "AUC with sensitive": 0.7784,
+      "AUC without (ours)": 0.7788,
+      "AUC cost": -0.0004
+    }
+  },
+  "trained_at": "2026-11-01 23:20"
+}
