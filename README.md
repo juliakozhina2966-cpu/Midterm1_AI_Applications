@@ -81,6 +81,7 @@ Midterm1_AI_Applications/
 ├── notebooks/credit_default_analysis.ipynb   # executed notebook: full analysis incl. robustness checks
 ├── reports/
 │   ├── business_report.html  # 2–3 page business report (print to PDF from the browser)
+│   ├── slides.html           # 7-minute presentation (arrows to move, F full screen, N speaker notes)
 │   ├── figures/              # charts used in the presentation
 │   ├── *.csv                 # all result tables
 │   └── Credit_Review_Top450.csv     # test-period contact list (IDs + scores, no outcome)

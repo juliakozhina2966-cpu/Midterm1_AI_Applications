@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Who should the bank call first? FI510E Midterm 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap">
+<style>
+  :root {
+    --ink: #17302b;
+    --soft: #5a6f69;
+    --rule: #c9d4ce;
+    --pale: #eef2ef;
+    --call: #7a2131;
+    --w: 1280px;
+    --h: 720px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #1b2523; overflow: hidden; }
+  body { font-family: "Archivo", Arial, sans-serif; color: var(--ink); }
+
+  .deck { position: absolute; left: 50%; top: 50%; width: var(--w); height: var(--h); transform-origin: center; }
+  .slide {
+    position: absolute; inset: 0; background: #fff; padding: 64px 80px 56px;
+    display: none; flex-direction: column;
+  }
+  .slide.active { display: flex; }
+
+  h1 { font-size: 64px; line-height: 1.02; margin: 0; font-weight: 800; font-variation-settings: "wdth" 70; }
+  h2 { font-size: 50px; line-height: 1.08; margin: 0 0 40px; font-weight: 750; font-variation-settings: "wdth" 75; max-width: 1050px; }
+  p, li { font-size: 29px; line-height: 1.38; }
+  p { margin: 0 0 14px; }
+  ul { margin: 0; padding-left: 28px; }
+  li { margin-bottom: 14px; }
+  b { font-weight: 700; }
+  .soft { color: var(--soft); }
+  .red { color: var(--call); }
+
+  .foot {
+    position: absolute; left: 80px; right: 80px; bottom: 24px;
+    display: flex; justify-content: space-between; font-size: 15px; color: var(--soft);
+  }
+
+  /* title slide */
+  .title-slide { justify-content: center; background: var(--pale); }
+  .title-slide h1 { font-size: 84px; }
+  .title-slide .sub { font-size: 30px; margin: 22px 0 46px; color: var(--soft); }
+  .title-slide .names { font-size: 24px; }
+
+  /* big figures */
+  .figures { display: flex; gap: 56px; margin: 18px 0 34px; }
+  .figure-num { font-size: 132px; font-weight: 800; line-height: 1; font-variation-settings: "wdth" 66; font-variant-numeric: tabular-nums; }
+  .figure-label { font-size: 25px; color: var(--soft); max-width: 300px; margin-top: 6px; }
+
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
+  .cols h3 { font-size: 28px; margin: 0 0 10px; font-weight: 700; }
+  .cols li, .cols p { font-size: 26px; }
+
+  /* confusion matrix */
+  .matrix { border-collapse: collapse; font-size: 32px; }
+  .matrix th, .matrix td { padding: 24px 24px; text-align: center; }
+  .matrix th { font-size: 18px; color: var(--soft); font-weight: 600; }
+  .matrix td { border: 2px solid #fff; font-variant-numeric: tabular-nums; font-weight: 700; min-width: 170px; }
+  .matrix .ok { background: var(--pale); }
+  .matrix .bad { background: #f3dcdf; color: var(--call); }
+  .matrix .empty { background: #f7f7f7; color: #aaa; }
+
+  /* results table */
+  table.results { border-collapse: collapse; width: 100%; font-size: 25px; font-variant-numeric: tabular-nums; }
+  .results th, .results td { padding: 13px 14px; border-bottom: 1px solid var(--rule); text-align: right; }
+  .results th:first-child, .results td:first-child { text-align: left; }
+  .results th { font-size: 17px; color: var(--soft); font-weight: 600; border-bottom: 2px solid var(--ink); vertical-align: bottom; }
+  .results tr.sel td { font-weight: 750; background: var(--pale); }
+  .results tr.base td { color: var(--soft); }
+
+  /* bars */
+  .bars { display: grid; grid-template-columns: 260px 1fr; gap: 18px 24px; align-items: center; margin: 10px 0 30px; }
+  .bar-label { font-size: 22px; }
+  .bar { height: 84px; display: flex; align-items: center; padding-left: 18px; font-size: 32px; font-weight: 800; color: #fff; }
+  .bar.model { background: var(--call); width: calc(317 / 450 * 100%); }
+  .bar.random { background: #9aa9a3; width: calc(99 / 450 * 100%); }
+  .bar-track { background: var(--pale); }
+
+  /* rule */
+  .rule-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 4px 0 30px; }
+  .step { padding: 30px 26px 34px; border-top: 6px solid var(--rule); background: #f7f9f8; }
+  .step.call { border-top-color: var(--call); }
+  .step.sms { border-top-color: #d08a3c; }
+  .step .who { font-size: 20px; color: var(--soft); margin-bottom: 6px; }
+  .step .what { font-size: 38px; font-weight: 750; line-height: 1.1; margin-bottom: 8px; }
+  .step p { font-size: 22px; margin: 0; }
+
+  img.chart { width: 100%; display: block; }
+
+  /* speaker notes */
+  .notes {
+    display: none; position: fixed; left: 0; right: 0; bottom: 0; max-height: 30vh; overflow: auto;
+    background: #fffbe6; color: #222; padding: 14px 22px; font: 16px/1.45 Arial, sans-serif;
+    border-top: 2px solid #e2c34a; z-index: 5;
+  }
+  body.show-notes .notes { display: block; }
+  .help { position: fixed; right: 12px; top: 8px; font: 12px Arial, sans-serif; color: #8fa19b; z-index: 4; }
+  body.show-notes .help, body.printing .help { display: none; }
+
+  @media print {
+    @page { size: 1280px 720px; margin: 0; }
+    html, body { background: #fff; overflow: visible; height: auto; }
+    .deck { position: static; transform: none !important; width: auto; height: auto; }
+    .slide { position: relative; display: flex !important; width: 1280px; height: 720px; break-after: page; }
+    .notes, .help { display: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="help">← → to move · F full screen · N notes</div>
+
+<div class="deck" id="deck">
+
+  <!-- 1 -->
+  <section class="slide title-slide" data-speaker="Elisa"
+    data-notes="Hello. We are Elisa, Iulia and Lucas. Our project uses machine learning to help a bank decide which credit card clients to call before they miss a payment.">
+    <h1>Who should the bank call first?</h1>
+    <p class="sub">Predicting credit card default one month ahead</p>
+    <p class="names">Elisa Ouillet, Iulia Kozhina, Lucas Clodic<br><span class="soft">FI510E AI &amp; Business Applications, Midterm 1, Rabat Business School</span></p>
+  </section>
+
+  <!-- 2 -->
+  <section class="slide" data-speaker="Elisa"
+    data-notes="A bank has 4,500 credit card clients. About 1 in 5 will not pay next month. The collections team can only make 450 calls a month, so it cannot call everybody. Our question: which 450 clients should it call, so the calls reach as many future defaulters as possible? A call before the due date allows a reminder or an instalment plan.">
+    <h2>The team can call 10% of its clients. Which ones?</h2>
+    <div class="figures">
+      <div><div class="figure-num">4,500</div><div class="figure-label">credit card clients each month</div></div>
+      <div><div class="figure-num red">22%</div><div class="figure-label">will miss next month's payment</div></div>
+      <div><div class="figure-num">450</div><div class="figure-label">calls the collections team can make</div></div>
+    </div>
+    <p><b>Decision:</b> right after the September statement, choose who to call before the October due date
+      (reminder, instalment plan). A wrong call wastes time and annoys a good client.</p>
+  </section>
+
+  <!-- 3 -->
+  <section class="slide" data-speaker="Elisa"
+    data-notes="The data is public, from the UCI repository: 30,000 clients of a Taiwanese bank in 2005. For each client we know six months of history. We checked quality: no missing values, but some codes were not documented, so we grouped them. We removed sex, marital status and age on purpose: a bank should not decide on these, and removing them changes almost nothing. Everything we use is known before the payment, so there is no leakage. We split the data 70/15/15 and kept the test set for one final check.">
+    <h2>The data: 30,000 clients, six months of history</h2>
+    <div class="cols">
+      <div>
+        <h3>What we use</h3>
+        <ul>
+          <li>Credit limit and education</li>
+          <li>For each month, April to September: repayment status, bill, amount paid</li>
+          <li>7 ratios we added: share of limit used, share of bills repaid, months late…</li>
+        </ul>
+      </div>
+      <div>
+        <h3>What we checked or removed</h3>
+        <ul>
+          <li>No missing values; undocumented codes grouped</li>
+          <li><b>Sex, marital status, age removed</b>: not acceptable for a credit decision, costs only 0.002 AUC</li>
+          <li>No leakage: all inputs known before the payment</li>
+          <li>Split 70 / 15 / 15: train, choose, test once</li>
+        </ul>
+      </div>
+    </div>
+    <p class="soft" style="margin-top:auto; font-size:18px">Source: UCI Machine Learning Repository, Default of Credit Card Clients (Yeh &amp; Lien, 2009). Taiwan, 2005, amounts in NT$.</p>
+  </section>
+
+  <!-- 4 -->
+  <section class="slide" data-speaker="Iulia"
+    data-notes="Before any model, a baseline: say that nobody defaults. It is right 78% of the time, which sounds good, but it finds zero defaulters. So accuracy is useless here. We need a measure of how well the model ranks the risky clients at the top: Average Precision.">
+    <h2>The accuracy trap</h2>
+    <div class="cols" style="align-items:center">
+      <div>
+        <p>Simplest rule: <b>"nobody defaults"</b>.</p>
+        <p>It is right <b>78%</b> of the time…<br>but it finds <b class="red">0 defaulters</b>.</p>
+        <p>So we do not choose models with accuracy. We use <b>Average Precision</b>: are the real defaulters at the top of the list?</p>
+      </div>
+      <div>
+        <table class="matrix">
+          <tr><th></th><th>predicted: pays</th><th>predicted: defaults</th></tr>
+          <tr><th>really pays</th><td class="ok">3,505</td><td class="empty">0</td></tr>
+          <tr><th>really defaults</th><td class="bad">995 missed</td><td class="empty">0</td></tr>
+        </table>
+        <p class="soft" style="font-size:17px; margin-top:10px">Baseline on the 4,500 validation clients</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="slide" data-speaker="Iulia"
+    data-notes="We trained five models from the course. All beat the baseline. The last column is what matters for the bank: how many real defaulters are in the 450 highest scores. Random Forest and XGBoost are tied. Our rule, fixed before the test, was the best Average Precision. XGBoost even gave slightly different scores on two of our laptops, so the gap is noise: we kept the Random Forest, which gives the same result everywhere. Cross-validation confirmed the tie.">
+    <h2>Five models compared on 4,500 validation clients</h2>
+    <table class="results">
+      <tr><th>Model</th><th>Accuracy</th><th>Recall at 0.50</th><th>Average Precision</th><th>Defaulters in the top 450</th></tr>
+      <tr class="base"><td>Baseline: nobody defaults</td><td>0.779</td><td>0.000</td><td>0.221</td><td>~99 (random)</td></tr>
+      <tr><td>Logistic Regression</td><td>0.811</td><td>0.304</td><td>0.512</td><td>298</td></tr>
+      <tr><td>Decision Tree</td><td>0.813</td><td>0.358</td><td>0.512</td><td>307</td></tr>
+      <tr class="sel"><td>Random Forest (chosen)</td><td>0.814</td><td>0.348</td><td>0.552</td><td>310</td></tr>
+      <tr><td>Support Vector Machine</td><td>0.814</td><td>0.321</td><td>0.497</td><td>304</td></tr>
+      <tr><td>XGBoost</td><td>0.817</td><td>0.356</td><td>0.550</td><td>310</td></tr>
+    </table>
+    <p style="margin-top:30px; font-size:25px">Random Forest and XGBoost are tied. XGBoost's score changed between two of our laptops, so we kept the model that gives the same result everywhere.</p>
+  </section>
+
+  <!-- 6 -->
+  <section class="slide" data-speaker="Iulia"
+    data-notes="Then, only once, the test set: 4,500 clients the model never saw. In the 450 highest scores there are 317 real defaulters: 7 calls out of 10 reach a future defaulter. Calling 450 random clients would reach only about 99. Results are close to validation, so the model does not overfit.">
+    <h2>Final test: 317 defaulters reached in 450 calls</h2>
+    <div class="bars">
+      <div class="bar-label"><b>Random Forest</b><br><span class="soft">450 highest scores</span></div>
+      <div class="bar-track"><div class="bar model">317</div></div>
+      <div class="bar-label"><b>Random calls</b><br><span class="soft">450 clients by chance</span></div>
+      <div class="bar-track"><div class="bar random">99</div></div>
+    </div>
+    <ul>
+      <li><b>70%</b> of the calls reach a future defaulter, <b>3.2 times</b> better than chance</li>
+      <li>ROC-AUC 0.782 on the test set vs 0.777 in validation: the model does not overfit</li>
+      <li>The test set was used once, after the model and the rule were fixed</li>
+    </ul>
+  </section>
+
+  <!-- 7 -->
+  <section class="slide" data-speaker="Lucas"
+    data-notes="Is it worth money? Our assumptions: a call costs 500 NT$, a call to a good client costs 1,500 more, a call to a future defaulter saves 10% of the bill. Missing a defaulter costs about 4,700 NT$, a useless call 2,000. The curve: calling in the model's order creates value, peaking around 650 calls; random calls always lose money. These are assumptions, so we tested nine combinations: the top 450 stays profitable in all nine. It pays as soon as a call saves 2.3% of the bill.">
+    <h2>It pays, even if our cost assumptions are wrong</h2>
+    <div class="cols" style="grid-template-columns: 1.45fr 1fr; gap: 36px; align-items: start">
+      <img class="chart" src="figures/03_cost_curve.png" alt="Net value of the calls by number of clients contacted: the model ranking peaks around 650 calls, random calls always lose money">
+      <ul>
+        <li>Missed defaulter: <b>~4,700 NT$</b><br>Useless call: <b>2,000 NT$</b></li>
+        <li>Value peaks at <b>~650 calls</b>: 450 is on the profitable part</li>
+        <li>9 cost scenarios tested: <b>profitable in 9 out of 9</b></li>
+        <li>Break-even: a call must save only <b>2.3%</b> of the bill (we assume 10%)</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section class="slide" data-speaker="Lucas"
+    data-notes="Our recommendation is a simple monthly rule. Score every client, call the 450 riskiest, send an SMS to the next 200, do nothing for the rest. On the test month that is 317 defaulters reached and about 1.8 million NT$, roughly 51,000 euros, for 4,500 clients. A fixed number of calls always fits the team's capacity. [30-second demo of the web page: load 'slipping', change September to 3 months late, the client jumps from 827th to 483rd.]">
+    <h2>Recommendation: a simple monthly rule</h2>
+    <div class="rule-steps">
+      <div class="step call"><div class="who">Ranks 1 to 450</div><div class="what">Call</div><p>Reminder and instalment-plan offer</p></div>
+      <div class="step sms"><div class="who">Ranks 451 to 650</div><div class="what">Automatic SMS</div><p>Still worth contacting, almost free</p></div>
+      <div class="step"><div class="who">All others</div><div class="what">No action</div><p>Most of them pay on time</p></div>
+    </div>
+    <p>Expected on the test month: <b>317 defaulters reached</b> and about <b>+1.8 M NT$</b> (≈&nbsp;51,000&nbsp;€) for 4,500&nbsp;clients.</p>
+    <p class="soft" style="font-size:20px">Demo: a web page shows where one client ranks among 4,500 and what to do.</p>
+  </section>
+
+  <!-- 9 -->
+  <section class="slide" data-speaker="Lucas"
+    data-notes="Limits. The data is from Taiwan in 2005: a Moroccan bank would retrain on its own data and follow law 09-08 on personal data. The model predicts who will default, not whether a call changes it: the next step is an A/B test, calling half of the top 450 and comparing default rates. The costs must be confirmed by finance. Thank you, we are happy to take your questions.">
+    <h2>Limits and next steps</h2>
+    <ul>
+      <li><b>Old, foreign data</b>: Taiwan, 2005. A Moroccan bank must retrain on its own clients and respect law 09-08 on personal data.</li>
+      <li><b>Prediction is not prevention</b>: next step, an A/B test. Call half of the top 450, compare default rates.</li>
+      <li><b>Assumed costs</b>: tested on nine scenarios, to confirm with the finance team.</li>
+      <li><b>Monitoring</b>: check the hit rate every month and retrain when it drops.</li>
+    </ul>
+    <p style="margin-top:auto; font-size:34px; font-weight:750">Thank you. Questions?</p>
+  </section>
+
+</div>
+
+<div class="notes" id="notes"></div>
+
+<script>
+  const slides = [...document.querySelectorAll('.slide')];
+  const deck = document.getElementById('deck');
+  const notes = document.getElementById('notes');
+  let current = 0;
+
+  // footer: speaker and page number on every slide except the title
+  slides.forEach((slide, i) => {
+    if (i === 0) return;
+    const foot = document.createElement('div');
+    foot.className = 'foot';
+    foot.innerHTML = `<span>${slide.dataset.speaker}</span><span>${i + 1} / ${slides.length}</span>`;
+    slide.append(foot);
+  });
+
+  function fit() {
+    const scale = Math.min(innerWidth / 1280, innerHeight / 720);
+    deck.style.transform = `translate(-50%, -50%) scale(${scale})`;
+  }
+
+  function show(i) {
+    current = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach((s, k) => s.classList.toggle('active', k === current));
+    const s = slides[current];
+    notes.innerHTML = `<b>${s.dataset.speaker}, slide ${current + 1}:</b> ${s.dataset.notes}`;
+    history.replaceState(null, '', `#${current + 1}`);
+  }
+
+  addEventListener('keydown', (e) => {
+    if (['ArrowRight', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); show(current + 1); }
+    if (['ArrowLeft', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); show(current - 1); }
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+    if (e.key === 'n' || e.key === 'N') document.body.classList.toggle('show-notes');
+    if (e.key === 'f' || e.key === 'F') {
+      document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+    }
+  });
+  addEventListener('click', (e) => { if (!e.target.closest('.notes')) show(current + (e.clientX > innerWidth / 3 ? 1 : -1)); });
+  addEventListener('resize', fit);
+
+  fit();
+  show((parseInt(location.hash.slice(1), 10) || 1) - 1);
+</script>
+</body>
+</html>
