@@ -28,11 +28,15 @@ where an analyst types in a client's last six statements and sees where the clie
 
 | Model | Accuracy | Precision | Recall | F1 | Avg. Precision | ROC-AUC | Defaulters in top 450 |
 |---|---|---|---|---|---|---|---|
+| Baseline: nobody defaults | 0.779 | 0.000 | 0.000 | 0.000 | 0.221 | 0.500 | ~99 (random calls) |
 | Logistic Regression | 0.811 | 0.659 | 0.304 | 0.416 | 0.512 | 0.755 | 298 |
 | Decision Tree | 0.813 | 0.636 | 0.358 | 0.458 | 0.512 | 0.764 | 307 |
 | **Random Forest** | 0.814 | 0.648 | 0.348 | 0.453 | **0.552** | 0.777 | **310** |
 | Support Vector Machine | 0.814 | 0.662 | 0.321 | 0.432 | 0.497 | 0.715 | 304 |
 | Extreme Gradient Boosting | 0.817 | 0.660 | 0.356 | 0.462 | 0.550 | 0.779 | 310 |
+
+The baseline is right 78% of the time but catches no defaulter, so accuracy alone is misleading here.
+Confusion matrices for every model are in the notebook (Task 3).
 
 Random Forest and XGBoost are practically tied. The selection rule, fixed before looking at the test set, is:
 highest validation Average Precision; if several models are within **0.005 AP**, keep the one whose result does
