@@ -568,5 +568,11 @@ model_card = {
 joblib.dump(final, MODEL_DIR / 'credit_default_model.joblib', compress=3)
 with open(MODEL_DIR / 'model_card.json', 'w') as f:
     json.dump(model_card, f, indent=2)
-print('Saved models/credit_default_model.joblib and models/model_card.json')
+# The website places a new client in this ranked portfolio (validation scores,
+# riskiest first): rank <= CAPACITY means the client would be on the call list.
+portfolio = np.sort(valid_scores[BEST])[::-1].round(4).tolist()
+with open(MODEL_DIR / 'portfolio_scores.json', 'w') as f:
+    json.dump({'model_name': BEST, 'capacity': CAPACITY, 'scores': portfolio}, f)
+print('Saved models/credit_default_model.joblib, models/model_card.json '
+      'and models/portfolio_scores.json')
 print('Start the website with:  python app/app.py')

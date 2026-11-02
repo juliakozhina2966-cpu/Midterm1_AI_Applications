@@ -7,7 +7,7 @@ Team: Lucas Clodic, Elisa Ouillet, Iulia Kozhina
 A credit-card issuer has a small collections team that can contact about **10% of its clients each month**.
 This project trains and compares five machine-learning models that rank clients by their risk of missing next
 month's payment, selects the best one on a validation set, tests it once, and serves it through a simple website
-where an analyst types in a client's last six statements and gets a risk estimate with a recommended action.
+where an analyst types in a client's last six statements and sees where the client lands in the monthly call queue.
 
 ![Website](reports/figures/website.png)
 
@@ -51,20 +51,23 @@ on every machine; XGBoost is an equivalent alternative.
 3. **Cost–benefit and capacity analysis** — converts errors into NT$ (false negative = loss not avoided,
    false positive = contact + goodwill cost). Random contacts destroy value; the model's ranking creates
    value up to ~650 contacts, so the 450-contact limit is binding → business case for SMS/app reminders.
-4. **Decision-ready website** — risk estimate, risk band, recommended action and plain-language reasons.
+4. **Decision-ready website** — places a client in the ranked queue of 4,500 validation clients ("827th of
+   4,500, 377 places after the last call"), with the decision, the default rate of similar clients and
+   plain-language reasons. The history is edited month by month and the position updates live.
 
 ## Repository structure
 
 ```
 credit-default-ai/
 ├── app/                      # Flask website
-│   ├── app.py                # API: POST /api/predict, GET /api/model
+│   ├── app.py                # API: POST /api/predict, GET /api/portfolio, GET /api/model
 │   ├── templates/index.html
 │   └── static/  style.css  app.js
 ├── data/                     # original UCI .xls + codebook
 ├── models/
 │   ├── credit_default_model.joblib   # trained pipeline (features + scaler + model)
-│   └── model_card.json              # metrics, thresholds, assumptions
+│   ├── model_card.json              # metrics, thresholds, assumptions
+│   └── portfolio_scores.json        # validation scores, riskiest first (the website's queue)
 ├── notebooks/credit_default_analysis.ipynb   # executed notebook (same code as src/train.py)
 ├── reports/
 │   ├── figures/              # charts used in the presentation
@@ -91,6 +94,8 @@ python app/app.py     # starts the website
 ```
 
 The trained model is already in `models/`, so the website works without retraining.
+Open http://127.0.0.1:5000. On macOS, port 5000 is often taken by AirPlay Receiver; in that case run
+`flask --app app/app.py run --port 5050` and open http://127.0.0.1:5050.
 
 **Jupyter:** open `notebooks/credit_default_analysis.ipynb` and run all cells; it finds `data/` by itself.
 

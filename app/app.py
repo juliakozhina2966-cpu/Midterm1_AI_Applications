@@ -6,6 +6,7 @@ Run from the repository root:
 Production (Render, Railway...):
     gunicorn app.app:app
 """
+import bisect
 import json
 import sys
 from pathlib import Path
@@ -21,6 +22,9 @@ from src.features import add_features  # noqa: E402
 MODEL = joblib.load(ROOT / 'models' / 'credit_default_model.joblib')
 CARD = json.loads((ROOT / 'models' / 'model_card.json').read_text())
 INPUTS = CARD['input_columns']
+# Validation clients' scores, riskiest first: the "portfolio" a new client is ranked in
+PORTFOLIO = json.loads((ROOT / 'models' / 'portfolio_scores.json').read_text())['scores']
+PORTFOLIO_ASC = sorted(PORTFOLIO)
 
 MONTHS = ['September', 'August', 'July', 'June', 'May', 'April']  # index 0 = latest
 STATUS_FIELDS = ['PAY_0', 'PAY_2', 'PAY_3', 'PAY_4', 'PAY_5', 'PAY_6']
@@ -85,16 +89,22 @@ def explain(df):
     return [{'direction': d, 'text': t} for d, t in reasons[:4]]
 
 
+def rank_in_portfolio(prob):
+    """1 + number of portfolio clients with a strictly higher score."""
+    return len(PORTFOLIO_ASC) - bisect.bisect_right(PORTFOLIO_ASC, prob) + 1
+
+
 def decide(prob):
     bands = CARD['risk_bands']
     if prob >= bands['high']:
         return ('high', 'High risk',
-                'Contact this month: payment reminder and an instalment-plan offer. '
-                'This client would be on the priority list (top 10% of scores).')
+                'Call before the due date and offer an instalment plan. A score this high '
+                'puts the client among the 10% riskiest, the share the team can call each month.')
     if prob >= bands['medium']:
         return ('medium', 'Elevated risk',
-                'Monitor: send an automatic SMS or app reminder before the due date.')
-    return ('low', 'Low risk', 'No action needed this month.')
+                'Riskier than the average client but below the call-list cut-off. '
+                'An automatic SMS or app reminder before the due date costs almost nothing.')
+    return ('low', 'Low risk', 'Nothing to do. Most clients with this history pay on time.')
 
 
 @app.get('/')
@@ -121,6 +131,14 @@ def predict():
     band, label, action = decide(prob)
     return jsonify({'probability': prob, 'band': band, 'label': label,
                     'action': action, 'reasons': explain(df),
+                    'base_rate': CARD['base_default_rate'],
+                    'rank': rank_in_portfolio(prob), 'portfolio_size': len(PORTFOLIO),
+                    'capacity': CARD['capacity']})
+
+
+@app.get('/api/portfolio')
+def portfolio():
+    return jsonify({'scores': PORTFOLIO, 'capacity': CARD['capacity'],
                     'base_rate': CARD['base_default_rate']})
 
 

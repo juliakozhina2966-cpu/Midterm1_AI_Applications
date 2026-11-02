@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CreditPulse: where does this client stand in the call queue?</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="sheet">
+    <header class="masthead">
+      <h1>CreditPulse</h1>
+      <p>Each month the collections team can call {{ stats.capacity }} of its 4,500 clients, riskiest first.
+         Enter a client's last six statements to see where they land in that queue.</p>
+    </header>
+
+    <figure class="queue" id="queue" data-band="none">
+      <div class="queue-plot">
+        <svg id="queue-svg" viewBox="0 0 1000 300" preserveAspectRatio="none" aria-hidden="true">
+          <path id="area-rest" class="area-rest" d=""></path>
+          <path id="area-call" class="area-call" d=""></path>
+          <path id="curve" class="curve" d=""></path>
+        </svg>
+        <div class="call-bracket" id="call-bracket">
+          <span>Called this month</span>
+        </div>
+        <div class="cut-label" id="cut-label"></div>
+        <div class="marker" id="marker" hidden>
+          <span class="marker-line"></span>
+          <span class="marker-dot" id="marker-dot"></span>
+          <div class="marker-note" id="marker-note">
+            <p class="rank"><span id="rank-value">–</span><span class="rank-of"> of 4,500</span></p>
+            <p id="rank-gap"></p>
+            <p id="rank-odds"></p>
+          </div>
+        </div>
+      </div>
+      <figcaption>
+        <span>Riskiest</span>
+        <span>4,500 clients ranked by estimated risk. Height: defaulters per 100 similar clients.</span>
+        <span>Safest</span>
+      </figcaption>
+    </figure>
+
+    <section class="decision" aria-live="polite">
+      <h2 id="decision-title">Waiting for a complete history</h2>
+      <p id="decision-text">Every month needs a bill and a payment amount.</p>
+    </section>
+
+    <form id="client-form" class="client" novalidate>
+      <div class="client-line">
+        <h2>The client</h2>
+        <label class="field">Credit limit, NT$
+          <input name="LIMIT_BAL" type="number" min="1" step="1000" inputmode="numeric" required>
+        </label>
+        <label class="field">Education
+          <select name="EDUCATION">
+            <option value="1">Graduate school</option>
+            <option value="2" selected>University</option>
+            <option value="3">High school</option>
+            <option value="4">Other</option>
+          </select>
+        </label>
+        <p class="examples">Real clients from the data:
+          <button type="button" data-preset="low">reliable payer</button>,
+          <button type="button" data-preset="medium">slipping</button>,
+          <button type="button" data-preset="high">long overdue</button>
+        </p>
+      </div>
+
+      <div class="ledger-scroll">
+        <table class="ledger">
+          <caption>Statements, April to September 2005</caption>
+          <thead>
+            <tr>
+              <td></td>
+              {% for i in range(5, -1, -1) %}<th scope="col">{{ months[i][:3] }}</th>{% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="status-row">
+              <th scope="row">Repayment</th>
+              {% for i in range(5, -1, -1) %}
+              <td>
+                <select name="{{ 'PAY_0' if i == 0 else 'PAY_%d' % (i + 1) }}" aria-label="Repayment status, {{ months[i] }}">
+                  <option value="-2">No bill</option>
+                  <option value="-1">Paid in full</option>
+                  <option value="0" selected>Minimum</option>
+                  {% for d in range(1, 9) %}<option value="{{ d }}">{{ d }} month{{ 's' if d > 1 }} late</option>{% endfor %}
+                </select>
+              </td>
+              {% endfor %}
+            </tr>
+            <tr>
+              <th scope="row">Bill, NT$</th>
+              {% for i in range(5, -1, -1) %}
+              <td><input name="BILL_AMT{{ i + 1 }}" type="number" step="1" inputmode="numeric" aria-label="Bill, {{ months[i] }}" required></td>
+              {% endfor %}
+            </tr>
+            <tr>
+              <th scope="row">Paid, NT$</th>
+              {% for i in range(5, -1, -1) %}
+              <td><input name="PAY_AMT{{ i + 1 }}" type="number" min="0" step="1" inputmode="numeric" aria-label="Amount paid, {{ months[i] }}" required></td>
+              {% endfor %}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p id="form-error" class="error" role="alert" hidden></p>
+    </form>
+
+    <section class="reasons-block">
+      <h2>What moves this client up or down the queue</h2>
+      <ul id="reasons" class="reasons"></ul>
+    </section>
+
+    <footer class="colophon">
+      <p>
+        Model: {{ stats.model }}, trained on 21,000 clients of a Taiwanese bank in 2005
+        (<a href="https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients">UCI Default of Credit Card Clients</a>, Yeh and Lien 2009).
+        The queue is the 4,500 validation clients. On 4,500 other clients it never saw, the top {{ stats.capacity }}
+        held {{ '%.0f' % (stats.precision_at_k * 100) }} defaulters per 100 calls, against 22 for random calls.
+        Sex, age and marital status are not used. A teaching project for FI510E at Rabat Business School, not a credit decision tool.
+      </p>
+    </footer>
+  </main>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
