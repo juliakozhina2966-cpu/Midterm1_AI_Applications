@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>FI510E Midterm 1 - Oral presentation script</title>
+<!-- Carlito has the same metrics as Calibri, so it matches the report -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Carlito:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+  @page { size: A4; margin: 2cm; }
+  body {
+    font-family: Calibri, Carlito, Arial, sans-serif;
+    font-size: 13pt;
+    line-height: 1.45;
+    color: #000;
+    max-width: 17cm;
+    margin: 0 auto;
+    padding: 1cm 0 2cm;
+  }
+  @media print { body { padding: 0; max-width: none; } }
+
+  .title { text-align: center; margin-bottom: 14pt; }
+  .title h1 { font-size: 18pt; margin: 0 0 4pt; }
+  .title p { margin: 0; font-size: 11pt; }
+
+  table { border-collapse: collapse; width: 100%; font-size: 11pt; margin: 0 0 8pt; }
+  th, td { border: 1px solid #000; padding: 3pt 6pt; text-align: left; }
+  th { background: #d9d9d9; }
+  td:last-child, th:last-child { text-align: center; }
+  .tips { font-size: 11pt; margin: 0 0 6pt; padding-left: 18pt; }
+
+  .speaker { margin-top: 22pt; }
+  .speaker + .speaker { break-before: page; }
+  .speaker h2 {
+    font-size: 15pt;
+    margin: 0 0 10pt;
+    padding: 4pt 8pt;
+    background: #d9d9d9;
+    border-left: 5pt solid #000;
+  }
+  .speaker h2 span { font-weight: 400; font-size: 11pt; }
+
+  .slide { break-inside: avoid; margin-bottom: 10pt; }
+  .slide h3 { font-size: 11pt; margin: 0 0 3pt; color: #444; }
+  .slide p { margin: 0 0 6pt; text-align: justify; }
+  b { background: #fff2a8; padding: 0 1pt; }
+
+  .stage {
+    font-size: 11pt;
+    font-style: italic;
+    color: #444;
+    border: 1px dashed #777;
+    padding: 3pt 8pt;
+    margin: 6pt 0;
+  }
+  .handover {
+    font-weight: 700;
+    margin-top: 10pt;
+    padding-top: 6pt;
+    border-top: 1px solid #000;
+  }
+</style>
+</head>
+<body>
+
+<div class="title">
+  <h1>Oral presentation script</h1>
+  <p>FI510E AI &amp; Business Applications, Midterm 1, Rabat Business School</p>
+  <p>Elisa Ouillet, Iulia Kozhina, Lucas Clodic &nbsp;|&nbsp; 7 minutes</p>
+</div>
+
+<table>
+  <tr><th>Speaker</th><th>Slides</th><th>Part</th><th>Time</th></tr>
+  <tr><td>Elisa</td><td>1 to 3</td><td>Business problem and data</td><td>2 min</td></tr>
+  <tr><td>Iulia</td><td>4 to 6</td><td>Accuracy trap, models, final test</td><td>2 min</td></tr>
+  <tr><td>Lucas</td><td>7 to 9</td><td>Cost of errors, recommendation, demo, limits</td><td>2 min 45</td></tr>
+</table>
+<ul class="tips">
+  <li>Speak slowly and look at the audience, not at the slides. The highlighted numbers are the ones to remember.</li>
+  <li>If you run out of time, skip the ROC-AUC sentence (slide 6) and the 2.3% sentence (slide 7).</li>
+  <li>Each speaker starts on a new page when printed.</li>
+</ul>
+
+<!-- ============================== ELISA ============================== -->
+<section class="speaker">
+  <h2>Elisa <span>&nbsp;slides 1 to 3, about 2 minutes</span></h2>
+
+  <div class="slide">
+    <h3>Slide 1. Title</h3>
+    <p>Good morning. We are Elisa, Iulia and Lucas. Our project answers a simple question: if a bank can only call a few of its
+    credit card clients this month, who should it call first?</p>
+  </div>
+
+  <div class="slide">
+    <h3>Slide 2. The business problem</h3>
+    <p>A credit card company has <b>4,500 clients</b>. Every month, about <b>22%</b> of them, so one in five, will miss their next
+    payment. But the team only has time for <b>450 calls</b>, which is 10% of the clients.</p>
+    <p>The decision happens right after the September statement. The team calls before the October due date, with a reminder or an
+    instalment plan. A call to the right person recovers part of the debt. A call to a good client wastes time and annoys them.</p>
+    <p>So our model has one job: put the clients who will not pay at the top of the list.</p>
+  </div>
+
+  <div class="slide">
+    <h3>Slide 3. The data</h3>
+    <p>We used a public dataset from the UCI repository: <b>30,000 clients</b> of a bank in Taiwan, in 2005. For each client we have
+    the credit limit, the education level and six months of history: payment status, bill and amount paid. We added seven ratios,
+    like the share of the credit limit used.</p>
+    <p>There are no missing values. We removed sex, marital status and age, because a bank should not use them in a credit decision,
+    and it costs almost nothing. All the variables are known before the payment, so there is no leakage. Finally, we split the
+    clients: 70% to train, 15% to choose the model, and 15% to test it only once, at the end.</p>
+  </div>
+
+  <p class="handover">Iulia will now show you the models.</p>
+</section>
+
+<!-- ============================== IULIA ============================== -->
+<section class="speaker">
+  <h2>Iulia <span>&nbsp;slides 4 to 6, about 2 minutes</span></h2>
+
+  <div class="slide">
+    <h3>Slide 4. The accuracy trap</h3>
+    <p>Before comparing models, one warning. The simplest rule is to say "nobody defaults". On our validation clients, this rule is
+    right <b>78% of the time</b>. That sounds good, but look at the table: it finds <b>zero defaulters</b>. All 995 are missed.</p>
+    <p>So accuracy is a trap here. We chose the models with <b>Average Precision</b> instead. It checks if the real defaulters are
+    at the top of the ranking, which is exactly what the call team needs.</p>
+  </div>
+
+  <div class="slide">
+    <h3>Slide 5. Five models</h3>
+    <p>We compared five models from the course on the 4,500 validation clients. The last column is the most concrete one: out of
+    450 calls, how many reach a future defaulter. Random calls would reach about <b>99</b>. Logistic Regression reaches 298, and the
+    two best models, Random Forest and XGBoost, reach <b>310</b>.</p>
+    <p>These two are almost tied: 0.552 and 0.550 in Average Precision. When we ran the same code on two of our laptops, the XGBoost
+    score changed a little. So the difference was only noise, and we kept the <b>Random Forest</b>, which gives the same result on
+    every computer.</p>
+  </div>
+
+  <div class="slide">
+    <h3>Slide 6. The final test</h3>
+    <p>Then, and only then, we used the test set, one time. These are 4,500 clients the model had never seen. In its 450 highest
+    scores, the Random Forest finds <b>317 real defaulters</b>. Random calls would find 99. So <b>7 calls out of 10</b> reach the
+    right person, more than three times better than chance.</p>
+    <p>The ROC-AUC is 0.782 on the test set and 0.777 on validation. The results are very close, so the model does not overfit.</p>
+  </div>
+
+  <p class="handover">Lucas will now explain what this means in money.</p>
+</section>
+
+<!-- ============================== LUCAS ============================== -->
+<section class="speaker">
+  <h2>Lucas <span>&nbsp;slides 7 to 9 and demo, about 2 minutes 45</span></h2>
+
+  <div class="slide">
+    <h3>Slide 7. The cost of errors</h3>
+    <p>The two errors do not cost the same. With our assumptions, missing a defaulter costs about <b>4,700 NT$</b>, that's New
+    Taiwan dollars, and calling a good client costs <b>2,000</b>.</p>
+    <p>The curve shows the value created by the calls. With the model, it grows until about <b>650 calls</b>, so 450 calls is
+    profitable. With random calls, the bank always loses money.</p>
+    <p>The costs are assumptions, so we tested <b>nine scenarios</b>. The model's list is profitable in all nine. In fact, a call
+    only needs to save 2.3% of the bill to pay for itself, and we assumed 10%.</p>
+  </div>
+
+  <div class="slide">
+    <h3>Slide 8. Recommendation and demo</h3>
+    <p>Our recommendation is a simple monthly rule. Call the <b>top 450</b>, with a reminder and an instalment plan. Send an
+    automatic SMS to ranks 451 to 650, which is almost free. Do nothing for the others.</p>
+    <p>On the test month, this rule reaches 317 defaulters and brings about <b>1.8 million NT$</b>, around 51,000 euros, for 4,500
+    clients.</p>
+    <p class="stage">Switch to the website (already open on the "slipping" client). About 30 seconds.</p>
+    <p>Here is a web page that uses the model. The curve is the 4,500 clients, riskiest first, and the red part is the 450 we call.
+    This client was late in August and September. The client is ranked <b>827th</b>, so 377 places after the last call: we only
+    send a reminder.</p>
+    <p class="stage">Click "long overdue".</p>
+    <p>Now a client who has been late for months: ranked <b>8th</b>, so we call this client this month.</p>
+    <p class="stage">Back to the slides.</p>
+  </div>
+
+  <div class="slide">
+    <h3>Slide 9. Limits and next steps</h3>
+    <p>To finish, four limits. First, the data is old and foreign: Taiwan, 2005. A Moroccan bank would retrain on its own clients
+    and respect law 09-08. Second, the model predicts who will default, not whether a call prevents it. The next step is an A/B
+    test: call only half of the top 450 and compare the default rates. Third, the costs should be confirmed with the finance team.
+    And finally, the model must be checked every month and retrained when it gets worse.</p>
+  </div>
+
+  <p class="handover">Thank you for your attention. We are happy to answer your questions.</p>
+</section>
+
+</body>
+</html>
