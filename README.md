@@ -82,18 +82,20 @@ credit-default-ai/
 ## How to run
 
 ```bash
-git clone https://github.com/<your-account>/credit-default-ai.git
-cd credit-default-ai
+git clone https://github.com/juliakozhina2966-cpu/Midterm1_AI_Applications.git
+cd Midterm1_AI_Applications
 pip install -r requirements.txt
 
-python src/train.py   
-python app/app.py     
+python src/train.py   # retrains the 5 models, writes models/ and reports/
+python app/app.py     # starts the website
 ```
 
 The trained model is already in `models/`, so the website works without retraining.
 
-**Google Colab:** upload or clone the repository, then run
-`%cd credit-default-ai`, `!pip install -r requirements.txt` and `!python src/train.py`,
+**Jupyter:** open `notebooks/credit_default_analysis.ipynb` and run all cells; it finds `data/` by itself.
+
+**Google Colab:** clone the repository, then run
+`%cd Midterm1_AI_Applications`, `!pip install -r requirements.txt` and `!python src/train.py`,
 or open `notebooks/credit_default_analysis.ipynb`.
 
 ## Put the website online (free)
