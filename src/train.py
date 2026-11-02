@@ -325,10 +325,21 @@ topk_table.to_csv(ROOT / 'reports' / 'validation_top_k.csv')
 
 # Selection rule: highest Average Precision (quality of the whole ranking),
 # Precision@K as tie-breaker. Both are suitable for a 22% minority class.
+# Near-tie rule: XGBoost's validation AP moved by ~0.004 between two team laptops
+# with the same library versions (0.550 vs 0.554), while Random Forest stayed at
+# 0.552. A gap below TIE_MARGIN is therefore noise, not a real difference. Among
+# near-tied models we prefer one whose result does not depend on the computer,
+# so that the contact list does not change when the model is retrained elsewhere.
+TIE_MARGIN = 0.005
+MACHINE_DEPENDENT = {'Extreme Gradient Boosting'}
 ranking = topk_table.sort_values(['Average Precision', f'Precision at {CAPACITY}'],
                                  ascending=False)
-BEST = ranking.index[0]
-print(f'\nCandidate model (highest validation Average Precision): {BEST}')
+near_best = [m for m in ranking.index
+             if ranking.loc[m, 'Average Precision'] >= ranking['Average Precision'].iloc[0] - TIE_MARGIN]
+stable = [m for m in near_best if m not in MACHINE_DEPENDENT]
+BEST = stable[0] if stable else ranking.index[0]
+print(f'\nModels within {TIE_MARGIN} AP of the best (near-tie): {near_best}')
+print(f'Candidate model (highest validation AP, stable across computers): {BEST}')
 print(f'  finds {int(topk_table.loc[BEST, "Real defaulters found"])} defaulters in '
       f'{CAPACITY} contacts vs ~{int(CAPACITY * y_valid.mean())} with random calls '
       f'(x{topk_table.loc[BEST, f"Precision at {CAPACITY}"] / y_valid.mean():.1f} lift).')

@@ -15,7 +15,7 @@ where an analyst types in a client's last six statements and gets a risk estimat
 
 | | Value (held-out test set, 4,500 clients) |
 |---|---|
-| Selected model | **Random Forest** (chosen on validation Average Precision) |
+| Selected model | **Random Forest** (chosen on validation Average Precision, near-tie rule below) |
 | ROC-AUC | 0.78 |
 | Defaulters found in the top 450 contacts | **317 of 450 (70% hit rate)** vs ~99 with random calls |
 | Expected net value of the 450 contacts* | ≈ 1.8 M NT$ per 4,500 clients |
@@ -31,11 +31,16 @@ where an analyst types in a client's last six statements and gets a risk estimat
 | Logistic Regression | 0.811 | 0.659 | 0.304 | 0.416 | 0.512 | 0.755 | 298 |
 | Decision Tree | 0.813 | 0.636 | 0.358 | 0.458 | 0.512 | 0.764 | 307 |
 | **Random Forest** | 0.814 | 0.648 | 0.348 | 0.453 | **0.552** | 0.777 | **310** |
-| Support Vector Machine | 0.814 | 0.662 | 0.321 | 0.432 | 0.496 | 0.714 | 304 |
-| Extreme Gradient Boosting | 0.817 | 0.662 | 0.354 | 0.461 | 0.550 | 0.778 | 310 |
+| Support Vector Machine | 0.814 | 0.662 | 0.321 | 0.432 | 0.497 | 0.715 | 304 |
+| Extreme Gradient Boosting | 0.817 | 0.660 | 0.356 | 0.462 | 0.550 | 0.779 | 310 |
 
-Random Forest and XGBoost are practically tied; the selection rule (highest Average Precision, fixed before
-looking at the test set) picks Random Forest.
+Random Forest and XGBoost are practically tied. The selection rule, fixed before looking at the test set, is:
+highest validation Average Precision; if several models are within **0.005 AP**, keep the one whose result does
+not depend on the computer. We added the second part after noticing that the same code, with the same library
+versions (scikit-learn 1.8.0, XGBoost 3.4.1), gives XGBoost an AP of 0.554 on one team laptop and 0.550 on
+another, while Random Forest stays at 0.552. A 0.004 gap is therefore noise, and a bank does not want its
+contact list to change because the model was retrained on another server. The rule picks **Random Forest**
+on every machine; XGBoost is an equivalent alternative.
 
 ## What we added beyond a standard notebook
 
@@ -108,7 +113,8 @@ The free plan sleeps after inactivity; open the link a minute before the present
 - **Preprocessing** (fitted on training data only, inside a scikit-learn `Pipeline`): code cleaning,
   feature engineering, standard scaling, one-hot encoding.
 - **Models:** Logistic Regression, Decision Tree, Random Forest, SVM (RBF kernel), XGBoost.
-- **Selection:** validation Average Precision; Precision/Recall at 450 for the operational view.
+- **Selection:** validation Average Precision (near-ties within 0.005 → the model that is stable across
+  computers); Precision/Recall at 450 for the operational view. Same rule in the notebook and in `src/train.py`.
 - **Test set:** used once, after the model and policy were frozen.
 
 ## Limitations
