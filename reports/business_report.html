@@ -2,221 +2,150 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Who should the collections team call? FI510E Midterm 1 business report</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400&display=swap">
+<title>FI510E Midterm 1 - Credit card default prediction - Business report</title>
+<!-- Carlito has the same metrics as Calibri, Word's default font -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Carlito:ital,wght@0,400;0,700;1,400&display=swap">
 <style>
-  @page { size: A4; margin: 15mm 17mm 15mm 17mm; }
-  :root {
-    --ink: #17302b;
-    --soft: #4f6660;
-    --rule: #bfccc6;
-    --tint: #eef2ef;
-    --call: #7a2131;
-  }
-  * { box-sizing: border-box; }
-  html { background: #dfe5e1; }
+  @page { size: A4; margin: 2cm; }
   body {
+    font-family: Calibri, Carlito, Arial, sans-serif;
+    font-size: 11pt;
+    line-height: 1.25;
+    color: #000;
+    max-width: 17cm;
     margin: 0 auto;
-    max-width: 210mm;
-    padding: 15mm 17mm;
-    background: #fff;
-    color: var(--ink);
-    font: 9.6pt/1.42 "Source Serif 4", Georgia, serif;
-    hyphens: auto;
+    padding: 1cm 0;
   }
-  @media print { html { background: none; } body { padding: 0; max-width: none; } }
-
-  h1, h2, h3, .meta, table, figcaption, .rule-box, .team { font-family: "Archivo", system-ui, sans-serif; }
-  h1 {
-    font-size: 21pt; line-height: 1.02; margin: 0;
-    font-weight: 800; font-variation-settings: "wdth" 66;
-  }
-  .subtitle { margin: 4px 0 0; font-size: 11pt; color: var(--soft); font-style: italic; }
-  .meta {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 2px 18px;
-    margin: 10px 0 0; padding: 8px 0; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--rule);
-    font-size: 8pt; color: var(--soft);
-  }
-  .meta b { color: var(--ink); font-weight: 600; }
-  .meta a { color: var(--ink); }
-
-  h2 {
-    font-size: 11.5pt; font-weight: 700; font-variation-settings: "wdth" 85;
-    margin: 13px 0 3px; break-after: avoid;
-  }
-  h2 .n { color: var(--call); margin-right: 6px; }
-  p { margin: 0 0 5px; }
-  ul { margin: 0 0 5px; padding-left: 15px; }
-  li { margin-bottom: 2px; }
-  strong { font-weight: 650; }
-  .two { columns: 2; column-gap: 7mm; }
-  .two p, .two li { break-inside: avoid-column; }
-
-  table { width: 100%; border-collapse: collapse; font-size: 7.9pt; margin: 4px 0 2px; font-variant-numeric: tabular-nums; }
-  th, td { padding: 2.6px 5px; text-align: right; border-bottom: 1px solid var(--rule); }
-  th:first-child, td:first-child { text-align: left; }
-  thead th { font-weight: 600; color: var(--soft); border-bottom: 1.5px solid var(--ink); vertical-align: bottom; }
-  tr.sel td { font-weight: 700; background: var(--tint); }
-  tr.base td { color: var(--soft); }
-  tr.test td { font-weight: 700; color: var(--call); border-top: 1.5px solid var(--ink); }
-  .tnote { font-family: "Archivo", sans-serif; font-size: 7.4pt; color: var(--soft); margin-bottom: 6px; }
-
-  figure { margin: 6px 0 4px; break-inside: avoid; }
-  figure img { width: 78%; display: block; }
-  figcaption { font-size: 7.6pt; color: var(--soft); margin-top: 2px; }
-
-  .rule-box {
-    margin: 6px 0 6px; padding: 8px 11px;
-    border-left: 4px solid var(--call); background: var(--tint);
-    font-size: 9pt; break-inside: avoid;
-  }
-  .rule-box p { margin: 0 0 3px; }
-  .rule-box b { color: var(--call); }
-
-  .team { width: 100%; font-size: 7.9pt; }
+  @media print { body { padding: 0; max-width: none; } }
+  .title { text-align: center; margin-bottom: 14pt; }
+  .title h1 { font-size: 16pt; margin: 0 0 4pt; }
+  .title p { margin: 0; text-align: center; }
+  p.sources { text-align: left; }
+  h2 { font-size: 12.5pt; margin: 12pt 0 4pt; break-after: avoid; }
+  p { text-align: justify; margin: 0 0 6pt; }
+  ul { margin: 0 0 6pt; padding-left: 18pt; }
+  li { text-align: justify; margin-bottom: 2pt; }
+  table { border-collapse: collapse; width: 100%; margin: 4pt 0 4pt; font-size: 10pt; break-inside: avoid; }
+  th, td { border: 1px solid #000; padding: 2pt 5pt; text-align: center; }
+  th { background: #d9d9d9; }
+  td:first-child, th:first-child { text-align: left; }
+  .caption { font-size: 9.5pt; font-style: italic; text-align: center; margin-bottom: 8pt; }
+  .figure { text-align: center; margin: 6pt 0 2pt; break-inside: avoid; }
+  .figure img { width: 70%; }
   .team td { text-align: left; vertical-align: top; }
-  .team td:first-child { font-weight: 700; white-space: nowrap; width: 15%; }
-  .todo { background: #fff1b8; padding: 0 3px; }
-  .refs { font-size: 7.8pt; color: var(--soft); }
-  .refs li { margin-bottom: 1px; }
+  .team td:first-child { white-space: nowrap; }
+  .todo { background: yellow; }
+  a { color: #0563c1; }
 </style>
 </head>
 <body>
 
-<h1>Who should the collections team call?<br>Predicting credit-card default one month ahead</h1>
-<p class="subtitle">FI510E AI &amp; Business Applications, Midterm 1 business report, Rabat Business School</p>
-
-<div class="meta">
-  <span><b>Team:</b> Iulia Kozhina, Lucas Clodic, Elisa Ouillet</span>
-  <span><b>Date:</b> 3 November 2026</span>
-  <span><b>Data:</b> <a href="https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients">UCI Default of Credit Card Clients</a> (Yeh &amp; Lien, 2009, CC BY 4.0)</span>
-  <span><b>Code:</b> <a href="https://github.com/juliakozhina2966-cpu/Midterm1_AI_Applications">github.com/juliakozhina2966-cpu/Midterm1_AI_Applications</a></span>
+<div class="title">
+  <h1>Predicting Credit Card Default: Who Should the Bank Call First?</h1>
+  <p>FI510E AI &amp; Business Applications, Midterm 1, Rabat Business School</p>
+  <p>Elisa Ouillet, Iulia Kozhina, Lucas Clodic &nbsp;|&nbsp; 3 November 2026</p>
 </div>
 
-<h2><span class="n">1</span>Business problem and decision</h2>
-<p>A credit-card issuer loses money when clients stop paying. Its collections team can contact about <strong>10% of clients each month</strong>
-(450 out of 4,500). If it calls the right people early, before the due date, it can offer a reminder or an instalment plan and recover
-part of the debt. If it calls good clients, it wastes time and annoys them.</p>
-<ul>
-  <li><strong>Question:</strong> which clients will miss next month's payment, so that the team calls them first?</li>
-  <li><strong>Unit of analysis:</strong> one client, at the end of a monthly statement cycle. <strong>Target:</strong> default on the October 2005 payment (1 = default).</li>
-  <li><strong>When the prediction is used:</strong> right after the September statement, before the October due date.</li>
-  <li><strong>Action:</strong> call the highest-risk clients (reminder, instalment offer); send a cheap SMS to the next ones; do nothing for the rest.</li>
-</ul>
+<p class="sources"><b>Dataset:</b> Default of Credit Card Clients, UCI Machine Learning Repository (Yeh &amp; Lien, 2009),
+<a href="https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients">archive.ics.uci.edu/dataset/350</a><br>
+<b>Notebook and code:</b> <a href="https://github.com/juliakozhina2966-cpu/Midterm1_AI_Applications">github.com/juliakozhina2966-cpu/Midterm1_AI_Applications</a></p>
 
-<h2><span class="n">2</span>Data, preparation and leakage control</h2>
-<div class="two">
-<p><strong>Source and size.</strong> 30,000 clients of a Taiwanese bank, April to September 2005: credit limit, education, sex, marital status, age,
-and for each of the six months the repayment status, the bill and the amount paid (amounts in New Taiwan dollars, NT$).
-<strong>22.1% defaulted</strong>, so a model that says "nobody defaults" is already right 77.9% of the time.</p>
-<p><strong>Quality checks.</strong> No missing values; 35 duplicated rows (kept: two clients can have identical histories).
-Undocumented codes were grouped: education 0, 5, 6 into "other", marital status 0 into "other". Repayment codes −2 and 0 are not in the
-official description; following public analyses of the dataset we read them as "no balance" and "minimum paid".
-1,930 clients with a negative bill (a credit balance) are kept as they are.</p>
-<p><strong>Excluded fields.</strong> <em>ID</em> (identifier only) and the target. <em>Sex, marital status and age</em> are excluded on purpose:
-they are protected attributes in credit decisions. Keeping them would improve ROC-AUC by at most 0.002, and without them the call list still
-mirrors the defaulters (58% women on the list vs 60% among defaulters, same hit rate for men and women).</p>
-<p><strong>No leakage.</strong> Every input is known on the September statement, before the October payment. Scaling and encoding are fitted on
-training data only, inside a scikit-learn pipeline. We added seven ratios an analyst would use (credit used, share of past bills repaid,
-months late, worst delay, bill trend, months without payment); they raise Logistic Regression's ROC-AUC from 0.713 to 0.755.</p>
-<p><strong>Split.</strong> All clients are observed at the same date, so a time-based split is impossible. We use a stratified
-<strong>70 / 15 / 15</strong> split: 21,000 to train, 4,500 to compare models and choose the policy, 4,500 kept for one final test.</p>
-</div>
+<h2>1. Business problem</h2>
+<p>A credit card company loses money when clients stop paying their bills. Its collections team can only contact about 10% of the
+clients each month, which means 450 calls for 4,500 clients. If the team calls the right clients before the due date, it can send a
+reminder or offer an instalment plan and recover part of the debt. If it calls good clients, it wastes time and annoys them.</p>
+<p>Our model answers one question: <b>which clients will miss next month's payment?</b> One observation is one client at the end of a
+monthly statement. The target is 1 if the client did not pay in October 2005. The prediction is used right after the September
+statement, before the October due date, to decide who is called first.</p>
 
-<h2><span class="n">3</span>Models and how we chose</h2>
-<p>We compared the "nobody defaults" <strong>baseline</strong> with five methods from the course: Logistic Regression, Decision Tree,
-Random Forest, Support Vector Machine and XGBoost. Accuracy cannot choose between them (see the baseline row), so the rule fixed before the test was:
-<strong>highest validation Average Precision</strong>, which measures whether real defaulters sit at the top of the ranking.
-Random Forest and XGBoost tied within 0.002, and XGBoost's score moved by 0.004 between two of our laptops with the same library versions.
-We therefore added a near-tie rule: within 0.005, keep the model whose result does not depend on the computer. This selects the <strong>Random Forest</strong>.</p>
+<h2>2. Data</h2>
+<p>The dataset contains 30,000 clients of a Taiwanese bank from April to September 2005. For each client we have the credit limit,
+education, sex, marital status, age, and for each of the six months the repayment status, the bill amount and the amount paid
+(in New Taiwan dollars, NT$). 22.1% of the clients defaulted, so a model that always predicts "no default" is already right 77.9% of the time.</p>
+<p><b>Data quality.</b> There are no missing values and 35 duplicated rows, which we kept because two clients can have the same history.
+Some codes are not explained by the data provider: education 0, 5 and 6 were grouped into "other", and marital status 0 into "other".
+For the repayment status, the codes -2 and 0 are also not documented; based on other public analyses we read them as "no balance"
+and "minimum paid".</p>
+<p><b>Variables excluded.</b> We removed the ID (it is only an identifier) and the target. We also removed sex, marital status and age,
+because a bank should not use them in a credit decision. This costs almost nothing: the ROC-AUC changes by at most 0.002.</p>
+<p><b>Target leakage.</b> All the variables we use are known in September, before the October payment. The scaling and encoding are
+learned on the training data only. We also created seven new variables that a credit analyst would look at, such as the share of the
+credit limit used, the share of past bills repaid and the number of months late. They improve the Logistic Regression ROC-AUC from 0.713 to 0.755.</p>
+<p><b>Split.</b> All clients are observed at the same date, so we could not split by time. We used a stratified split:
+70% for training (21,000 clients), 15% for validation (4,500) to compare the models, and 15% for the final test (4,500), used only once.</p>
+
+<h2>3. Models and results</h2>
+<p>We compared a simple baseline ("nobody defaults") with five models seen in class: Logistic Regression, Decision Tree,
+Random Forest, Support Vector Machine and XGBoost. Before looking at the test set, we decided to choose the model with the best
+<b>Average Precision</b> on the validation set, because it measures whether the real defaulters are at the top of the ranking.
+Random Forest and XGBoost were almost equal (0.552 and 0.550). When we ran the same code on two different laptops, the XGBoost score
+changed slightly, so we treated the difference as noise and kept the Random Forest, whose result does not change.</p>
 
 <table>
-  <thead>
-    <tr><th>Validation set, 4,500 clients</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1</th><th>Avg. precision</th><th>ROC-AUC</th><th>Defaulters in top 450</th></tr>
-  </thead>
-  <tbody>
-    <tr class="base"><td>Baseline: nobody defaults</td><td>0.779</td><td>0.000</td><td>0.000</td><td>0.000</td><td>0.221</td><td>0.500</td><td>~99 (random)</td></tr>
-    <tr><td>Logistic Regression</td><td>0.811</td><td>0.659</td><td>0.304</td><td>0.416</td><td>0.512</td><td>0.755</td><td>298</td></tr>
-    <tr><td>Decision Tree</td><td>0.813</td><td>0.636</td><td>0.358</td><td>0.458</td><td>0.512</td><td>0.764</td><td>307</td></tr>
-    <tr class="sel"><td>Random Forest (selected)</td><td>0.814</td><td>0.648</td><td>0.348</td><td>0.453</td><td>0.552</td><td>0.777</td><td>310</td></tr>
-    <tr><td>Support Vector Machine</td><td>0.814</td><td>0.662</td><td>0.321</td><td>0.432</td><td>0.497</td><td>0.715</td><td>304</td></tr>
-    <tr><td>XGBoost</td><td>0.817</td><td>0.660</td><td>0.356</td><td>0.462</td><td>0.550</td><td>0.779</td><td>310</td></tr>
-    <tr class="test"><td>Random Forest, final test (once)</td><td>0.817</td><td>0.659</td><td>0.355</td><td>0.462</td><td>0.556</td><td>0.782</td><td>317</td></tr>
-  </tbody>
+  <tr><th>Model (validation set)</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1-score</th><th>Avg. Precision</th><th>ROC-AUC</th><th>Defaulters in top 450</th></tr>
+  <tr><td>Baseline (nobody defaults)</td><td>0.779</td><td>0.000</td><td>0.000</td><td>0.000</td><td>0.221</td><td>0.500</td><td>~99</td></tr>
+  <tr><td>Logistic Regression</td><td>0.811</td><td>0.659</td><td>0.304</td><td>0.416</td><td>0.512</td><td>0.755</td><td>298</td></tr>
+  <tr><td>Decision Tree</td><td>0.813</td><td>0.636</td><td>0.358</td><td>0.458</td><td>0.512</td><td>0.764</td><td>307</td></tr>
+  <tr><td><b>Random Forest</b></td><td><b>0.814</b></td><td><b>0.648</b></td><td><b>0.348</b></td><td><b>0.453</b></td><td><b>0.552</b></td><td><b>0.777</b></td><td><b>310</b></td></tr>
+  <tr><td>Support Vector Machine</td><td>0.814</td><td>0.662</td><td>0.321</td><td>0.432</td><td>0.497</td><td>0.715</td><td>304</td></tr>
+  <tr><td>XGBoost</td><td>0.817</td><td>0.660</td><td>0.356</td><td>0.462</td><td>0.550</td><td>0.779</td><td>310</td></tr>
+  <tr><td><b>Random Forest on the test set</b></td><td>0.817</td><td>0.659</td><td>0.355</td><td>0.462</td><td>0.556</td><td>0.782</td><td>317</td></tr>
 </table>
-<p class="tnote">Accuracy, precision, recall and F1 at the 0.50 threshold. Test confusion matrix of the Random Forest at 0.50: 354 defaulters caught,
-642 missed, 183 false alerts, 3,321 good clients left alone. Confusion matrices for every model are in the notebook.</p>
+<p class="caption">Table 1. Model comparison. Accuracy, precision, recall and F1-score are computed with a 0.50 threshold.</p>
 
-<p><strong>Reading the errors.</strong> At 0.50 every model misses about two thirds of the defaulters: the threshold is too strict for a 22% class.
-That does not matter for our policy, because the team does not use a threshold: it calls the 450 highest scores. On that list the
-Random Forest finds <strong>317 defaulters out of 450 calls on the test set (70% hit rate)</strong>, 3.2 times more than 450 random calls (~99).
-Test results match validation (ROC-AUC 0.782 vs 0.777), so the model does not overfit.</p>
+<p>The baseline has 77.9% accuracy but finds no defaulter at all, so accuracy is not a good criterion here. With a 0.50 threshold, all
+models miss about two thirds of the defaulters. On the test set, the confusion matrix of the Random Forest is: 354 defaulters found,
+642 missed, 183 false alerts and 3,321 good clients correctly left alone.</p>
+<p>However, the team does not use a threshold: it calls the 450 clients with the highest risk. In this list, the Random Forest finds
+<b>317 real defaulters out of 450 calls on the test set (70%)</b>, against about 99 with random calls. The test results are close to the
+validation results (ROC-AUC 0.782 vs 0.777), so the model does not overfit.</p>
 
-<h2><span class="n">4</span>What errors cost, and whether the result holds</h2>
-<div class="two">
-<p><strong>Cost of errors (our assumptions).</strong> A call costs 500 NT$; calling a good client adds 1,500 NT$ of goodwill cost; an early call
-saves 10% of a defaulter's bill. A <strong>missed defaulter costs about 4,700 NT$</strong> (10% of an average 47,000 NT$ bill); a
-<strong>useless call costs 2,000 NT$</strong>. Missing a defaulter is 2.4 times worse, but capacity is fixed, so the ranking must put defaulters first.</p>
-<p><strong>Sensitivity.</strong> The 450 calls break even as soon as a call saves <strong>2.3%</strong> of a defaulter's bill, a fourth of our assumption.
-Across nine scenarios (5, 10 or 20% saved; 1,000, 2,000 or 3,500 NT$ per false alert) the model's top 450 is <strong>profitable in all nine</strong>
-(+0.30 to +3.49 M NT$); 450 random calls lose money in six.</p>
-<p><strong>Stability.</strong> In 5-fold cross-validation on training + validation data, Random Forest (Avg. precision 0.562 ± 0.015) and XGBoost
-(0.563 ± 0.013) remain tied and clearly ahead of the simpler models (+0.045).</p>
-<p><strong>Class weighting.</strong> Giving defaulters more weight raises recall at 0.50 from 0.35 to 0.61 but lowers precision from 0.65 to 0.48 (Random Forest), and leaves the
-top 450 unchanged (310 → 308 defaulters). It moves the threshold, not the ranking, so we do not use it.</p>
-</div>
+<h2>4. Cost of errors</h2>
+<p>We used the following assumptions: a call costs 500 NT$, calling a good client adds 1,500 NT$ (annoyed client), and calling a future
+defaulter early saves 10% of their bill. With these numbers, <b>a missed defaulter costs about 4,700 NT$</b> and <b>a useless call costs
+2,000 NT$</b>. Missing a defaulter is therefore the most expensive error, but since the team can only make 450 calls, the model must
+put the real defaulters at the top of the list.</p>
+<p>Because these costs are assumptions, we tested nine combinations (5%, 10% or 20% saved, and 1,000, 2,000 or 3,500 NT$ per
+false alert). The top 450 of the model is profitable in all nine cases, while 450 random calls lose money in six of them. The calls
+pay for themselves as soon as a call saves 2.3% of the bill. We also checked that the results are stable with a 5-fold
+cross-validation (Random Forest 0.562 ± 0.015, XGBoost 0.563 ± 0.013), and that giving more weight to defaulters does not improve the
+top 450 (310 vs 308 defaulters found).</p>
 
-<figure>
-  <img src="figures/03_cost_curve.png" alt="Net value of contacting clients in the order of the Random Forest ranking versus random contacts, by number of clients contacted. The ranking peaks at about 1.6 million NT$ around 650 contacts; random contacts lose money at every size.">
-  <figcaption><b>Figure 1.</b> Net value of contacting the N highest-risk clients (validation set, our cost assumptions). The ranking creates value up to
-  about 650 contacts and peaks there; random contacts lose money at every size. The team's 450-call capacity (red line) sits on the steep, profitable part of the curve.</figcaption>
-</figure>
+<div class="figure"><img src="figures/03_cost_curve.png" alt="Net value of the calls depending on the number of clients contacted, for the Random Forest ranking and for random calls">
+<p class="caption">Figure 1. Net value of the calls depending on the number of clients contacted (validation set). The model's ranking
+creates value up to about 650 calls; random calls always lose money.</p></div>
 
-<h2><span class="n">5</span>Recommendation</h2>
-<div class="rule-box">
-  <p><b>Monthly rule.</b> After each statement, score every client with the Random Forest and rank them.
-  <b>Call the 450 highest scores</b> with a reminder and an instalment-plan offer. <b>Send an automatic SMS to ranks 451 to 650.</b> Do nothing for the others.</p>
-  <p>Expected effect on the test month: <b>317 defaulters reached in 450 calls</b> instead of ~99, and about <b>+1.8 M NT$ net per 4,500 clients</b>
-  (about 51,000 € at today's rate) under our assumptions.</p>
-</div>
-<p>Why this rule: a fixed number of calls matches the team's real capacity every month, whereas a score threshold would produce a different workload
-each month. Value keeps rising until about 650 contacts, so the capacity is slightly too small; SMS reminders cover the gap at almost no cost.
-A web page in the repository shows the rule for one client: where they would rank among 4,500 clients and what to do.</p>
+<h2>5. Recommendation</h2>
+<p>Every month, after the statements, the bank should score all clients with the Random Forest and <b>call the 450 clients with the
+highest risk</b>, with a reminder and an instalment plan offer. The clients ranked 451 to 650 should receive an automatic SMS reminder,
+because the curve shows that contacting them still creates value. A fixed number of calls is easier to manage than a threshold,
+because it always matches the team's capacity.</p>
+<p>On the test set, this rule reaches 317 defaulters with 450 calls and brings about <b>+1.8 million NT$</b> (around 51,000 €) for
+4,500 clients, under our assumptions. We also built a small web page that shows where one client would rank among 4,500 clients and what to do.</p>
 
-<h2><span class="n">6</span>Limitations and next steps</h2>
+<h2>6. Limitations</h2>
 <ul>
-  <li><strong>Old, foreign data.</strong> One Taiwanese bank in 2005. Behaviour, currency and rules differ in Morocco today: the model must be re-trained on the bank's own data (and comply with law 09-08 on personal data).</li>
-  <li><strong>Prediction is not prevention.</strong> We predict who will default, not whether a call changes it. Next step: an A/B test, calling half of the top 450 and comparing default rates.</li>
-  <li><strong>Assumed costs.</strong> Tested over nine scenarios, but the finance team should confirm them.</li>
-  <li><strong>One period.</strong> All data come from the same months; performance must be monitored month by month and the model re-trained when it drifts.</li>
-  <li><strong>Simplified explanations.</strong> The reasons shown on the web page are hand-written rules on the main indicators, not the model's own logic.</li>
+  <li>The data come from one Taiwanese bank in 2005. A Moroccan bank would need to retrain the model on its own clients and respect law 09-08 on personal data.</li>
+  <li>The model predicts who will default, not whether a call prevents it. An A/B test (calling only half of the top 450) would measure the real effect of the calls.</li>
+  <li>The costs are assumptions and should be checked with the finance team.</li>
+  <li>The reasons displayed on the web page are simple rules, not the exact logic of the model.</li>
 </ul>
 
-<h2><span class="n">7</span>Sources, our changes and team</h2>
-<p><strong>Starting point.</strong> The UCI dataset and its original article (Yeh &amp; Lien, 2009); the structure of the Session 6 lab (Tasks 1 to 7);
-public analyses of the dataset for the meaning of the undocumented codes. <strong>What our team added:</strong> seven engineered ratios;
-the fairness test without sex, marital status and age; the cost model, break-even and nine-scenario sensitivity; the near-tie selection rule
-and cross-validation; the class-weighting test; a reproducible notebook and training script; the web page.</p>
+<h2>7. Sources and team</h2>
+<p>We started from the UCI dataset and its original article, and followed the structure of the Session 6 lab. Our own additions are the
+seven new variables, the test without sex, marital status and age, the cost analysis and the nine scenarios, the selection rule,
+the cross-validation and class-weight tests, and the web page.</p>
 
-<p><strong>Team and presentation (7 minutes, in speaking order).</strong></p>
 <table class="team">
-  <tbody>
-    <tr><td>Elisa Ouillet</td><td><span class="todo">To confirm: business framing of the problem, presentation slides.</span>
-      <em>Presents</em> part 1: the business problem, the decision, and the data (source, quality checks, excluded fields) (about 2 min).</td></tr>
-    <tr><td>Iulia Kozhina</td><td>Data preparation, feature engineering, the five models and the first full notebook, training script and website back end.
-      <em>Presents</em> parts 2 and 3: models, how we chose, results and comparison with the baseline (about 2 min 30).</td></tr>
-    <tr><td>Lucas Clodic</td><td>Reproducibility review (selection rule, cross-computer check), baseline and confusion matrices, cost sensitivity,
-      cross-validation and class-weight tests, web page, this report. <em>Presents</em> part 4: recommendation, limitations and a 30-second demo (about 2 min 30).</td></tr>
-  </tbody>
+  <tr><th>Member</th><th>Contribution</th><th>Presentation</th></tr>
+  <tr><td>Elisa Ouillet</td><td><span class="todo">To confirm: business framing, presentation slides</span></td><td>Business problem and data (about 2 min)</td></tr>
+  <tr><td>Iulia Kozhina</td><td>Data preparation, new variables, the five models, first version of the notebook, training script and website back end</td><td>Models and results (about 2 min 30)</td></tr>
+  <tr><td>Lucas Clodic</td><td>Reproducibility checks, baseline and confusion matrices, cost scenarios, cross-validation, website page, report</td><td>Recommendation, demo and limitations (about 2 min 30)</td></tr>
 </table>
 
-<ul class="refs">
-  <li>Yeh, I.-C. &amp; Lien, C.-h. (2009). The comparisons of data mining techniques for the predictive accuracy of probability of default of credit card clients. <em>Expert Systems with Applications</em>, 36(2), 2473–2480.</li>
-  <li>UCI Machine Learning Repository, dataset 350, Default of Credit Card Clients. https://archive.ics.uci.edu/dataset/350</li>
-  <li>Pedregosa, F. et al. (2011). Scikit-learn: Machine learning in Python. <em>JMLR</em>, 12, 2825–2830. Chen, T. &amp; Guestrin, C. (2016). XGBoost. <em>KDD '16</em>.</li>
-</ul>
+<p><b>References.</b> Yeh, I.-C. &amp; Lien, C.-h. (2009). The comparisons of data mining techniques for the predictive accuracy of
+probability of default of credit card clients. <i>Expert Systems with Applications</i>, 36(2), 2473-2480.
+UCI Machine Learning Repository, Default of Credit Card Clients (dataset 350).</p>
 
 </body>
 </html>
