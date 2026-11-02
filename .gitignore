@@ -1,0 +1,10 @@
+# Python / Jupyter caches
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Local environments and editor files
+.venv/
+venv/
+.DS_Store
+.claude/

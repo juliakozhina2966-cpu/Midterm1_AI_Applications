@@ -68,22 +68,21 @@ on every machine; XGBoost is an equivalent alternative.
 ## Repository structure
 
 ```
-credit-default-ai/
+Midterm1_AI_Applications/
 ├── app/                      # Flask website
 │   ├── app.py                # API: POST /api/predict, GET /api/portfolio, GET /api/model
 │   ├── templates/index.html
 │   └── static/  style.css  app.js
-├── data/                     # original UCI .xls + codebook
+├── data/                     # original UCI .xls + README (source, licence, codebook)
 ├── models/
 │   ├── credit_default_model.joblib   # trained pipeline (features + scaler + model)
 │   ├── model_card.json              # metrics, thresholds, assumptions
 │   └── portfolio_scores.json        # validation scores, riskiest first (the website's queue)
-├── notebooks/credit_default_analysis.ipynb   # executed notebook (same code as src/train.py)
+├── notebooks/credit_default_analysis.ipynb   # executed notebook: full analysis incl. robustness checks
 ├── reports/
 │   ├── figures/              # charts used in the presentation
 │   ├── *.csv                 # all result tables
-│   ├── Credit_Review_Top450.csv     # test-period contact list (IDs + scores, no outcome)
-│   └── training_log.txt
+│   └── Credit_Review_Top450.csv     # test-period contact list (IDs + scores, no outcome)
 ├── src/
 │   ├── features.py           # cleaning + feature engineering, shared by training and website
 │   └── train.py              # full analysis, Tasks 1–7 as in the Session 6 lab
