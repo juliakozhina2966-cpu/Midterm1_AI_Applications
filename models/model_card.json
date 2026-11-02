@@ -1,5 +1,5 @@
 {
-  "model_name": "Extreme Gradient Boosting",
+  "model_name": "Random Forest",
   "dataset": "UCI Default of Credit Card Clients (Taiwan, 2005), id 350",
   "input_columns": [
     "LIMIT_BAL",
@@ -38,7 +38,7 @@
   "base_default_rate": 0.2212,
   "capacity": 450,
   "risk_bands": {
-    "high": 0.5809203386306763,
+    "high": 0.571143963167774,
     "medium": 0.2212
   },
   "assumptions": {
@@ -86,8 +86,8 @@
       "FP": 188.0,
       "FN": 649.0,
       "TN": 3317.0,
-      "Average Precision": 0.5518787000957014,
-      "ROC-AUC": 0.7773066473594794
+      "Average Precision": 0.5521189205382462,
+      "ROC-AUC": 0.7773450705739826
     },
     "Support Vector Machine": {
       "Accuracy": 0.8135555555555556,
@@ -100,22 +100,22 @@
       "FP": 163.0,
       "FN": 676.0,
       "TN": 3342.0,
-      "Average Precision": 0.49608517440621724,
-      "ROC-AUC": 0.7140659072824894
+      "Average Precision": 0.496827131947924,
+      "ROC-AUC": 0.7152180302367759
     },
     "Extreme Gradient Boosting": {
-      "Accuracy": 0.8182222222222222,
-      "Precision": 0.667296786389414,
-      "Recall": 0.35477386934673366,
-      "F1-score": 0.463254593175853,
-      "Specificity": 0.9497860199714693,
-      "Alerts": 529.0,
-      "TP": 353.0,
-      "FP": 176.0,
-      "FN": 642.0,
-      "TN": 3329.0,
-      "Average Precision": 0.5539771128926007,
-      "ROC-AUC": 0.7787916759259923
+      "Accuracy": 0.8171111111111111,
+      "Precision": 0.6604477611940298,
+      "Recall": 0.35577889447236183,
+      "F1-score": 0.46244284781188766,
+      "Specificity": 0.9480741797432239,
+      "Alerts": 536.0,
+      "TP": 354.0,
+      "FP": 182.0,
+      "FN": 641.0,
+      "TN": 3323.0,
+      "Average Precision": 0.5501848911218817,
+      "ROC-AUC": 0.7793254431931411
     }
   },
   "validation_top_k": {
@@ -138,67 +138,67 @@
       "False alerts": 140.0,
       "Precision at 450": 0.6888888888888889,
       "Recall at 450": 0.31155778894472363,
-      "Average Precision": 0.5518787000957014
+      "Average Precision": 0.5521189205382462
     },
     "Support Vector Machine": {
       "Real defaulters found": 304.0,
       "False alerts": 146.0,
       "Precision at 450": 0.6755555555555556,
       "Recall at 450": 0.3055276381909548,
-      "Average Precision": 0.49608517440621724
+      "Average Precision": 0.496827131947924
     },
     "Extreme Gradient Boosting": {
-      "Real defaulters found": 311.0,
-      "False alerts": 139.0,
-      "Precision at 450": 0.6911111111111111,
-      "Recall at 450": 0.31256281407035175,
-      "Average Precision": 0.5539771128926007
+      "Real defaulters found": 310.0,
+      "False alerts": 140.0,
+      "Precision at 450": 0.6888888888888889,
+      "Recall at 450": 0.31155778894472363,
+      "Average Precision": 0.5501848911218817
     }
   },
   "test": {
-    "Accuracy": 0.8175555555555556,
-    "Precision": 0.665406427221172,
-    "Recall": 0.3534136546184739,
-    "F1-score": 0.4616393442622951,
-    "Specificity": 0.949486301369863,
-    "Alerts": 529.0,
-    "TP": 352.0,
-    "FP": 177.0,
-    "FN": 644.0,
-    "TN": 3327.0,
-    "Average Precision": 0.5623934506416867,
-    "ROC-AUC": 0.781235243485357,
-    "Real defaulters found": 311.0,
-    "False alerts": 139.0,
-    "Precision at 450": 0.6911111111111111,
-    "Recall at 450": 0.31224899598393574,
-    "net_value_ntd": 1664350.3000000003,
-    "saved_ntd": 2097850.3000000003
+    "Accuracy": 0.8166666666666667,
+    "Precision": 0.659217877094972,
+    "Recall": 0.35542168674698793,
+    "F1-score": 0.461839530332681,
+    "Specificity": 0.9477739726027398,
+    "Alerts": 537.0,
+    "TP": 354.0,
+    "FP": 183.0,
+    "FN": 642.0,
+    "TN": 3321.0,
+    "Average Precision": 0.556232599516161,
+    "ROC-AUC": 0.7815061616328326,
+    "Real defaulters found": 317.0,
+    "False alerts": 133.0,
+    "Precision at 450": 0.7044444444444444,
+    "Recall at 450": 0.31827309236947793,
+    "net_value_ntd": 1789164.2000000002,
+    "saved_ntd": 2213664.2
   },
-  "cost_curve_best_k": 550,
-  "net_value_valid_model": 1468922.0,
+  "cost_curve_best_k": 650,
+  "net_value_valid_model": 1455578.4000000001,
   "net_value_valid_random": -282195.12999999995,
   "feature_importance": {
-    "PAY_0": 0.17942620642273194,
-    "BILL_AMT1": 0.04124879091091953,
-    "LIMIT_BAL": 0.02043605748899082,
-    "BILL_AMT6": 0.017374794988447562,
-    "PAY_AMT3": 0.013154901907142458,
-    "PAY_AMT2": 0.011895057723109993,
-    "PAY_AMT4": 0.010059136875615748,
-    "PAY_AMT1": 0.00914645793572726,
-    "PAY_AMT6": 0.007966095127336814,
-    "PAY_2": 0.007154846024658279,
-    "PAY_AMT5": 0.005369470076859795,
-    "PAY_3": 0.004181315761885074,
-    "PAY_5": 0.003840013985172597,
-    "PAY_4": 0.003804125277762904,
-    "PAY_6": 0.003323838934627421,
-    "EDUCATION": 0.0027740129976665307,
-    "BILL_AMT5": 0.0022242083238952935,
-    "BILL_AMT4": 0.0021488834579531215,
-    "BILL_AMT3": 0.0018715927446486757,
-    "BILL_AMT2": 0.0007455994565683354
+    "PAY_0": 0.17590003365737164,
+    "BILL_AMT1": 0.022949153357909858,
+    "PAY_2": 0.017757415396046382,
+    "LIMIT_BAL": 0.016209153104302508,
+    "PAY_AMT3": 0.007655023485411338,
+    "PAY_5": 0.007278910647419612,
+    "PAY_AMT1": 0.007190180035810889,
+    "PAY_4": 0.006960503153815645,
+    "PAY_3": 0.006883761419653878,
+    "PAY_AMT4": 0.005661459111585887,
+    "BILL_AMT4": 0.0052380363199855395,
+    "PAY_AMT5": 0.005166337804354204,
+    "BILL_AMT3": 0.005089089829581783,
+    "BILL_AMT6": 0.005065560083162013,
+    "PAY_6": 0.004705961083244592,
+    "BILL_AMT5": 0.0038294177694013555,
+    "BILL_AMT2": 0.003564071581105277,
+    "PAY_AMT2": 0.002075512976312499,
+    "PAY_AMT6": 0.001799085245398313,
+    "EDUCATION": 0.0005889112748732828
   },
   "portfolio_medians": {
     "UTIL_LAST": 0.31564214285714287,
@@ -223,16 +223,16 @@
     },
     "Random Forest": {
       "AP raw features": 0.5461,
-      "AP + engineered": 0.5519,
+      "AP + engineered": 0.5521,
       "AUC raw features": 0.7749,
       "AUC + engineered": 0.7773,
       "AUC gain": 0.0024
     },
     "Extreme Gradient Boosting": {
-      "AP raw features": 0.5426,
-      "AP + engineered": 0.554,
-      "AUC raw features": 0.7753,
-      "AUC + engineered": 0.7788,
+      "AP raw features": 0.5459,
+      "AP + engineered": 0.5502,
+      "AUC raw features": 0.7758,
+      "AUC + engineered": 0.7793,
       "AUC gain": 0.0035
     }
   },
@@ -252,19 +252,19 @@
       "AUC cost": 0.0005
     },
     "Random Forest": {
-      "AP with sensitive": 0.556,
-      "AP without (ours)": 0.5519,
+      "AP with sensitive": 0.5559,
+      "AP without (ours)": 0.5521,
       "AUC with sensitive": 0.7788,
       "AUC without (ours)": 0.7773,
       "AUC cost": 0.0015
     },
     "Extreme Gradient Boosting": {
-      "AP with sensitive": 0.5517,
-      "AP without (ours)": 0.554,
-      "AUC with sensitive": 0.7784,
-      "AUC without (ours)": 0.7788,
-      "AUC cost": -0.0004
+      "AP with sensitive": 0.5537,
+      "AP without (ours)": 0.5502,
+      "AUC with sensitive": 0.7813,
+      "AUC without (ours)": 0.7793,
+      "AUC cost": 0.002
     }
   },
-  "trained_at": "2026-11-01 23:20"
+  "trained_at": "2026-11-02 16:51"
 }

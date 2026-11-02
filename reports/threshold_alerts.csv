@@ -5,9 +5,15 @@ Support Vector Machine,0.4,527
 Support Vector Machine,0.5,482
 Support Vector Machine,0.6,412
 Support Vector Machine,0.7,310
-Extreme Gradient Boosting,0.2,1561
-Extreme Gradient Boosting,0.3,1012
-Extreme Gradient Boosting,0.4,685
-Extreme Gradient Boosting,0.5,529
-Extreme Gradient Boosting,0.6,427
-Extreme Gradient Boosting,0.7,253
+Extreme Gradient Boosting,0.2,1543
+Extreme Gradient Boosting,0.3,997
+Extreme Gradient Boosting,0.4,693
+Extreme Gradient Boosting,0.5,536
+Extreme Gradient Boosting,0.6,433
+Extreme Gradient Boosting,0.7,268
+Random Forest,0.2,1550
+Random Forest,0.3,1017
+Random Forest,0.4,695
+Random Forest,0.5,534
+Random Forest,0.6,401
+Random Forest,0.7,182
