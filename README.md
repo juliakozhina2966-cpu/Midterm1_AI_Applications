@@ -55,7 +55,13 @@ on every machine; XGBoost is an equivalent alternative.
 3. **Cost–benefit and capacity analysis** — converts errors into NT$ (false negative = loss not avoided,
    false positive = contact + goodwill cost). Random contacts destroy value; the model's ranking creates
    value up to ~650 contacts, so the 450-contact limit is binding → business case for SMS/app reminders.
-4. **Decision-ready website** — places a client in the ranked queue of 4,500 validation clients ("827th of
+   **Sensitivity check:** a missed defaulter costs ~4,700 NT$ vs 2,000 NT$ for a useless call; the 450 calls
+   break even as soon as a call saves 2.3% of a defaulter's bill (we assume 10%), and the model's top 450 stays
+   profitable in all nine cost scenarios tested (+0.30 to +3.49 M NT$) while random calls lose money in six.
+4. **Robustness checks** — 5-fold cross-validation on train + validation: Random Forest (AP 0.562 ± 0.015) and
+   XGBoost (0.563 ± 0.013) stay tied, both clearly ahead of the simpler models. Class weighting raises recall at
+   0.50 (0.35 → 0.61) but does not improve the ranking (310 → 308 defaulters in the top 450), so it is not used.
+5. **Decision-ready website** — places a client in the ranked queue of 4,500 validation clients ("827th of
    4,500, 377 places after the last call"), with the decision, the default rate of similar clients and
    plain-language reasons. The history is edited month by month and the position updates live.
 
