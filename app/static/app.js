@@ -195,5 +195,6 @@ for (const button of document.querySelectorAll('[data-preset]')) {
   button.addEventListener('click', () => { fill(PRESETS[button.dataset.preset]); score(); });
 }
 
-fill(PRESETS.medium);
+// #low, #medium or #high in the URL opens that example (used for the slide screenshots)
+fill(PRESETS[location.hash.slice(1)] || PRESETS.medium);
 drawQueue().then(score);

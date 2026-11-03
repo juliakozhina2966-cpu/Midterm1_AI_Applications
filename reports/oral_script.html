@@ -72,7 +72,7 @@
   <tr><th>Speaker</th><th>Slides</th><th>Part</th><th>Time</th></tr>
   <tr><td>Elisa</td><td>1 to 3</td><td>Business problem and data</td><td>2 min</td></tr>
   <tr><td>Iulia</td><td>4 to 6</td><td>Accuracy trap, models, final test</td><td>2 min</td></tr>
-  <tr><td>Lucas</td><td>7 to 9</td><td>Cost of errors, recommendation, demo, limits</td><td>2 min 45</td></tr>
+  <tr><td>Lucas</td><td>7 to 10</td><td>Cost of errors, recommendation, web page, limits</td><td>2 min 45</td></tr>
 </table>
 <ul class="tips">
   <li>Speak slowly and look at the audience, not at the slides. The highlighted numbers are the ones to remember.</li>
@@ -147,7 +147,7 @@
 
 <!-- ============================== LUCAS ============================== -->
 <section class="speaker">
-  <h2>Lucas <span>&nbsp;slides 7 to 9 and demo, about 2 minutes 45</span></h2>
+  <h2>Lucas <span>&nbsp;slides 7 to 10, about 2 minutes 45</span></h2>
 
   <div class="slide">
     <h3>Slide 7. The cost of errors</h3>
@@ -160,22 +160,26 @@
   </div>
 
   <div class="slide">
-    <h3>Slide 8. Recommendation and demo</h3>
+    <h3>Slide 8. Recommendation</h3>
     <p>Our recommendation is a simple monthly rule. Call the <b>top 450</b>, with a reminder and an instalment plan. Send an
     automatic SMS to ranks 451 to 650, which is almost free. Do nothing for the others.</p>
     <p>On the test month, this rule reaches 317 defaulters and brings about <b>1.8 million NT$</b>, around 51,000 euros, for 4,500
     clients.</p>
-    <p class="stage">Switch to the website (already open on the "slipping" client). About 30 seconds.</p>
-    <p>Here is a web page that uses the model. The curve is the 4,500 clients, riskiest first, and the red part is the 450 we call.
-    This client was late in August and September. The client is ranked <b>827th</b>, so 377 places after the last call: we only
-    send a reminder.</p>
-    <p class="stage">Click "long overdue".</p>
-    <p>Now a client who has been late for months: ranked <b>8th</b>, so we call this client this month.</p>
-    <p class="stage">Back to the slides.</p>
   </div>
 
   <div class="slide">
-    <h3>Slide 9. Limits and next steps</h3>
+    <h3>Slide 9. The tool (screenshots of our web page)</h3>
+    <p>We also built a small web page that uses the model. The curve is the 4,500 clients, riskiest first, and the red part is the
+    450 the team calls.</p>
+    <p class="stage">Point at the left screenshot.</p>
+    <p>On the left, a client who was late in August and September. The client is ranked <b>827th</b>, so 377 places after the last
+    call: we only send a reminder.</p>
+    <p class="stage">Point at the right screenshot.</p>
+    <p>On the right, a client who has been late for months: ranked <b>8th</b>, so the team calls this client this month.</p>
+  </div>
+
+  <div class="slide">
+    <h3>Slide 10. Limits and next steps</h3>
     <p>To finish, four limits. First, the data is old and foreign: Taiwan, 2005. A Moroccan bank would retrain on its own clients
     and respect law 09-08. Second, the model predicts who will default, not whether a call prevents it. The next step is an A/B
     test: call only half of the top 450 and compare the default rates. Third, the costs should be confirmed with the finance team.

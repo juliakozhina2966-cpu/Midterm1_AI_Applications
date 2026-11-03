@@ -94,6 +94,12 @@
 
   img.chart { width: 100%; display: block; }
 
+  /* website screenshots */
+  .shots { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .shots figure { margin: 0; }
+  .shots img { width: 100%; display: block; border: 1px solid var(--rule); }
+  .shots figcaption { font-size: 24px; line-height: 1.35; margin-top: 14px; }
+
   /* speaker notes */
   .notes {
     display: none; position: fixed; left: 0; right: 0; bottom: 0; max-height: 30vh; overflow: auto;
@@ -236,7 +242,7 @@
 
   <!-- 8 -->
   <section class="slide" data-speaker="Lucas"
-    data-notes="Our recommendation is a simple monthly rule. Score every client, call the 450 riskiest, send an SMS to the next 200, do nothing for the rest. On the test month that is 317 defaulters reached and about 1.8 million NT$, roughly 51,000 euros, for 4,500 clients. A fixed number of calls always fits the team's capacity. [30-second demo of the web page: load 'slipping', change September to 3 months late, the client jumps from 827th to 483rd.]">
+    data-notes="Our recommendation is a simple monthly rule. Score every client, call the 450 riskiest, send an SMS to the next 200, do nothing for the rest. On the test month that is 317 defaulters reached and about 1.8 million NT$, roughly 51,000 euros, for 4,500 clients. A fixed number of calls always fits the team's capacity.">
     <h2>Recommendation: a simple monthly rule</h2>
     <div class="rule-steps">
       <div class="step call"><div class="who">Ranks 1 to 450</div><div class="what">Call</div><p>Reminder and instalment-plan offer</p></div>
@@ -244,10 +250,22 @@
       <div class="step"><div class="who">All others</div><div class="what">No action</div><p>Most of them pay on time</p></div>
     </div>
     <p>Expected on the test month: <b>317 defaulters reached</b> and about <b>+1.8 M NT$</b> (≈&nbsp;51,000&nbsp;€) for 4,500&nbsp;clients.</p>
-    <p class="soft" style="font-size:20px">Demo: a web page shows where one client ranks among 4,500 and what to do.</p>
   </section>
 
   <!-- 9 -->
+  <section class="slide" data-speaker="Lucas"
+    data-notes="We built a small web page that uses the model. The curve is the 4,500 clients, riskiest first; the red part is the 450 the team calls. Left: a client who was late in August and September is ranked 827th, 377 places after the last call, so only a reminder. Right: a client late for months is ranked 8th, so the team calls this month.">
+    <h2>The tool: where does one client stand?</h2>
+    <div class="shots">
+      <figure><img src="figures/demo_slipping.png" alt="Web page: a client late in August and September is ranked 827th of 4,500, 377 places after the last call">
+        <figcaption><b>Late in August and September</b><br>827th of 4,500: reminder, no call</figcaption></figure>
+      <figure><img src="figures/demo_overdue.png" alt="Web page: a client late for several months is ranked 8th of 4,500, on the call list">
+        <figcaption><b class="red">Late for several months</b><br>8th of 4,500: call this month</figcaption></figure>
+    </div>
+    <p class="soft" style="margin-top:auto; font-size:18px">Our web page (Flask): enter six months of statements, the model ranks the client among the 4,500 validation clients.</p>
+  </section>
+
+  <!-- 10 -->
   <section class="slide" data-speaker="Lucas"
     data-notes="Limits. The data is from Taiwan in 2005: a Moroccan bank would retrain on its own data and follow law 09-08 on personal data. The model predicts who will default, not whether a call changes it: the next step is an A/B test, calling half of the top 450 and comparing default rates. The costs must be confirmed by finance. Thank you, we are happy to take your questions.">
     <h2>Limits and next steps</h2>
