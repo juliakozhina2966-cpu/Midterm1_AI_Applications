@@ -138,7 +138,7 @@ The free plan sleeps after inactivity; open the link a minute before the present
 
 ## Limitations
 
-The data come from one Taiwanese bank in 2005; behaviour, currency and regulation differ today and in Morocco.
+The data come from one Taiwanese bank in 2005; behaviour, currency and regulation differ in other countries and today.
 The cost figures are assumptions. Predicting default does not prove that a phone call prevents it — that needs a
 randomised experiment (contact half of the high-risk clients, compare default rates). Teaching project only, not
 a credit decision tool.
