@@ -69,9 +69,11 @@ from src.features import (ENGINEERED_COLS, RAW_CATEGORY_COLS, RAW_NUMBER_COLS,
                           SENSITIVE_COLS, add_features, clean)
 
 DATA_FILE = ROOT / 'data' / 'default_of_credit_card_clients.xls'
-FIG_DIR = ROOT / 'reports' / 'figures'
+FIG_DIR = ROOT / 'results' / 'figures'
+TABLE_DIR = ROOT / 'results' / 'tables'
 MODEL_DIR = ROOT / 'models'
 FIG_DIR.mkdir(parents=True, exist_ok=True)
+TABLE_DIR.mkdir(parents=True, exist_ok=True)
 MODEL_DIR.mkdir(parents=True, exist_ok=True)
 
 SEED = 42
@@ -93,7 +95,7 @@ COLORS = {'Logistic Regression': '#7A8B99', 'Decision Tree': '#C9A227',
 
 
 def save_figure(filename):
-    """Save to reports/figures and display it when running in a notebook."""
+    """Save to results/figures and display it when running in a notebook."""
     plt.savefig(FIG_DIR / filename, bbox_inches='tight')
     plt.show() if IN_NOTEBOOK else plt.close()
 
@@ -271,7 +273,7 @@ val_table = pd.DataFrame({n: threshold_metrics(y_valid, s)
                           for n, s in valid_scores.items()}).T
 print(val_table[['Accuracy', 'Precision', 'Recall', 'F1-score', 'Alerts',
                  'Average Precision', 'ROC-AUC']].round(3))
-val_table.to_csv(ROOT / 'reports' / 'validation_threshold_050.csv')
+val_table.to_csv(TABLE_DIR / 'validation_threshold_050.csv')
 
 print('\nBusiness interpretation')
 print(f'  Fewest missed defaulters (highest recall): {val_table["Recall"].idxmax()} '
@@ -321,7 +323,7 @@ topk_table = pd.DataFrame({n: top_k(y_valid, s, CAPACITY)
                            for n, s in valid_scores.items()}).T
 topk_table['Average Precision'] = val_table['Average Precision']
 print(topk_table.round(3))
-topk_table.to_csv(ROOT / 'reports' / 'validation_top_k.csv')
+topk_table.to_csv(TABLE_DIR / 'validation_top_k.csv')
 
 # Selection rule: highest Average Precision (quality of the whole ranking),
 # Precision@K as tie-breaker. Both are suitable for a 22% minority class.
@@ -359,7 +361,7 @@ for name in dict.fromkeys(['Support Vector Machine', 'Extreme Gradient Boosting'
         ok = 'within capacity' if alerts <= CAPACITY else ''
         print(f'  threshold {t:.2f}: {alerts:>5} alerts {ok}')
         threshold_rows.append({'model': name, 'threshold': t, 'alerts': alerts})
-pd.DataFrame(threshold_rows).to_csv(ROOT / 'reports' / 'threshold_alerts.csv', index=False)
+pd.DataFrame(threshold_rows).to_csv(TABLE_DIR / 'threshold_alerts.csv', index=False)
 print(f'\nA fixed threshold gives a VARIABLE number of alerts that moves with the')
 print(f'portfolio (a recession pushes every score up). With a strict limit of')
 print(f'{CAPACITY} contacts, "contact the {CAPACITY} highest scores" is easier to run:')
@@ -389,7 +391,7 @@ for name in FAST:
 ablation = pd.DataFrame(ablation).set_index('model')
 ablation['AUC gain'] = ablation['AUC + engineered'] - ablation['AUC raw features']
 print(ablation.round(4))
-ablation.to_csv(ROOT / 'reports' / 'innovation_feature_engineering.csv')
+ablation.to_csv(TABLE_DIR / 'innovation_feature_engineering.csv')
 print('Ratios such as credit utilisation and repayment ratio help most the simple,')
 print('interpretable Logistic Regression; tree ensembles find them partly by themselves.')
 
@@ -408,7 +410,7 @@ for name in FAST:
 fairness = pd.DataFrame(fair_rows).set_index('model')
 fairness['AUC cost'] = fairness['AUC with sensitive'] - fairness['AUC without (ours)']
 print(fairness.round(4))
-fairness.to_csv(ROOT / 'reports' / 'innovation_fairness.csv')
+fairness.to_csv(TABLE_DIR / 'innovation_fairness.csv')
 
 # Who ends up on the contact list? Compare flag shares by sex.
 sel = np.argsort(-valid_scores[BEST], kind='stable')[:CAPACITY]
@@ -421,7 +423,7 @@ group_check = pd.DataFrame({
 })
 print('\nGroup check of the production model (sex is NOT an input):')
 print(group_check.round(3))
-group_check.to_csv(ROOT / 'reports' / 'innovation_group_check.csv')
+group_check.to_csv(TABLE_DIR / 'innovation_group_check.csv')
 print('Removing protected attributes costs almost nothing in accuracy, reduces')
 print('legal risk, and the contact list stays close to the defaulters\' composition.')
 
@@ -465,7 +467,7 @@ if best_k > CAPACITY:
 else:
     print(f'-> Contacting more than ~{best_k} clients destroys value: false alarms '
           f'cost more than they save.')
-curve.to_csv(ROOT / 'reports' / 'innovation_cost_curve.csv', index=False)
+curve.to_csv(TABLE_DIR / 'innovation_cost_curve.csv', index=False)
 
 fig, ax = plt.subplots(figsize=(7, 3.8))
 ax.plot(curve['contacts'], curve['net_value_model'] / 1e6, color='#1F4E79',
@@ -488,7 +490,7 @@ importance = (pd.Series(perm.importances_mean, index=INPUT_COLS)
               .sort_values(ascending=False))
 print('\nTop drivers of the candidate model (drop in AP when shuffled):')
 print(importance.head(8).round(4))
-importance.to_csv(ROOT / 'reports' / 'feature_importance.csv', header=['importance'])
+importance.to_csv(TABLE_DIR / 'feature_importance.csv', header=['importance'])
 
 fig, ax = plt.subplots(figsize=(6, 3.8))
 top = importance.head(10)[::-1]
@@ -525,8 +527,8 @@ order = np.argsort(-test_scores, kind='stable')[:CAPACITY]
 review = pd.DataFrame({'rank': np.arange(1, CAPACITY + 1),
                        'client_id': test['ID'].values[order],
                        'risk_score': test_scores[order].round(4)})
-review.to_csv(ROOT / 'reports' / f'Credit_Review_Top{CAPACITY}.csv', index=False)
-print(f'Exported reports/Credit_Review_Top{CAPACITY}.csv ({len(review)} rows, no target column)')
+review.to_csv(TABLE_DIR / f'Credit_Review_Top{CAPACITY}.csv', index=False)
+print(f'Exported results/tables/Credit_Review_Top{CAPACITY}.csv ({len(review)} rows, no target column)')
 
 
 # %% [markdown]

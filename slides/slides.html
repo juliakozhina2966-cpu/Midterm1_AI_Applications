@@ -230,7 +230,7 @@
     data-notes="Is it worth money? Our assumptions: a call costs 500 NT$, a call to a good client costs 1,500 more, a call to a future defaulter saves 10% of the bill. Missing a defaulter costs about 4,700 NT$, a useless call 2,000. The curve: calling in the model's order creates value, peaking around 650 calls; random calls always lose money. These are assumptions, so we tested nine combinations: the top 450 stays profitable in all nine. It pays as soon as a call saves 2.3% of the bill.">
     <h2>It pays, even if our cost assumptions are wrong</h2>
     <div class="cols" style="grid-template-columns: 1.45fr 1fr; gap: 36px; align-items: start">
-      <img class="chart" src="figures/03_cost_curve.png" alt="Net value of the calls by number of clients contacted: the model ranking peaks around 650 calls, random calls always lose money">
+      <img class="chart" src="../results/figures/03_cost_curve.png" alt="Net value of the calls by number of clients contacted: the model ranking peaks around 650 calls, random calls always lose money">
       <ul>
         <li>Missed defaulter: <b>~4,700 NT$</b><br>Useless call: <b>2,000 NT$</b></li>
         <li>Value peaks at <b>~650 calls</b>: 450 is on the profitable part</li>
@@ -257,9 +257,9 @@
     data-notes="We built a small web page that uses the model. The curve is the 4,500 clients, riskiest first; the red part is the 450 the team calls. Left: a client who was late in August and September is ranked 827th, 377 places after the last call, so only a reminder. Right: a client late for months is ranked 8th, so the team calls this month.">
     <h2>The tool: where does one client stand?</h2>
     <div class="shots">
-      <figure><img src="figures/demo_slipping.png" alt="Web page: a client late in August and September is ranked 827th of 4,500, 377 places after the last call">
+      <figure><img src="../results/figures/demo_slipping.png" alt="Web page: a client late in August and September is ranked 827th of 4,500, 377 places after the last call">
         <figcaption><b>Late in August and September</b><br>827th of 4,500: reminder, no call</figcaption></figure>
-      <figure><img src="figures/demo_overdue.png" alt="Web page: a client late for several months is ranked 8th of 4,500, on the call list">
+      <figure><img src="../results/figures/demo_overdue.png" alt="Web page: a client late for several months is ranked 8th of 4,500, on the call list">
         <figcaption><b class="red">Late for several months</b><br>8th of 4,500: call this month</figcaption></figure>
     </div>
     <p class="soft" style="margin-top:auto; font-size:18px">Our web page (Flask): enter six months of statements, the model ranks the client among the 4,500 validation clients.</p>

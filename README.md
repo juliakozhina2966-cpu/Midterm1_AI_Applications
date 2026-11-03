@@ -9,7 +9,7 @@ This project trains and compares five machine-learning models that rank clients 
 month's payment, selects the best one on a validation set, tests it once, and serves it through a simple website
 where an analyst types in a client's last six statements and sees where the client lands in the monthly call queue.
 
-![Website](reports/figures/website.png)
+![Website](results/figures/website.png)
 
 ## Results at a glance
 
@@ -79,12 +79,13 @@ Midterm1_AI_Applications/
 │   ├── model_card.json              # metrics, thresholds, assumptions
 │   └── portfolio_scores.json        # validation scores, riskiest first (the website's queue)
 ├── notebooks/credit_default_analysis.ipynb   # executed notebook: full analysis incl. robustness checks
-├── reports/
-│   ├── business_report.html  # 2–3 page business report (print to PDF from the browser)
-│   ├── slides.html           # 7-minute presentation (arrows to move, F full screen, N speaker notes)
-│   ├── figures/              # charts used in the presentation
-│   ├── *.csv                 # all result tables
-│   └── Credit_Review_Top450.csv     # test-period contact list (IDs + scores, no outcome)
+├── results/
+│   ├── figures/              # charts and website screenshots used in the report and the slides
+│   └── tables/               # all result tables (*.csv), incl. Credit_Review_Top450.csv,
+│                             # the test-period contact list (IDs + scores, no outcome)
+├── report/business_report.html   # 2–3 page business report (print to PDF from the browser)
+├── slides/slides.html        # 7-minute presentation (arrows to move, F full screen, N speaker notes)
+├── notes/oral_script.html    # word-for-word script of the oral, one part per speaker (+ PDF)
 ├── src/
 │   ├── features.py           # cleaning + feature engineering, shared by training and website
 │   └── train.py              # full analysis, Tasks 1–7 as in the Session 6 lab
@@ -100,7 +101,7 @@ git clone https://github.com/juliakozhina2966-cpu/Midterm1_AI_Applications.git
 cd Midterm1_AI_Applications
 pip install -r requirements.txt
 
-python src/train.py   # retrains the 5 models, writes models/ and reports/
+python src/train.py   # retrains the 5 models, writes models/ and results/
 python app/app.py     # starts the website
 ```
 
